@@ -1,0 +1,47 @@
+{
+  "name": "founttech-api",
+  "version": "1.0.0",
+  "description": "A simple RESTful API exposing many resources, including startups data, user authentication, and more.",
+  "main": "src/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "swagger": "node src/swagger/swagger.js",
+    "lint": "eslint src/**/*.js",
+    "format": "prettier --write src/**/*.js"
+  },
+  "keywords": [],
+  "author": "Baron T.",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "body-parser": "^2.2.2",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "express-validator": "^7.3.2",
+    "jsonwebtoken": "^9.0.3",
+    "mongodb": "^7.2.0",
+    "mongoose": "^9.6.2",
+    "passport": "^0.7.0",
+    "passport-github2": "^0.1.12",
+    "swagger-autogen": "^2.23.7",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.4.2",
+    "eslint": "^10.4.0",
+    "nodemon": "^3.1.14",
+    "prettier": "^3.8.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nrb2002/founttech-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nrb2002/founttech-api/issues"
+  },
+  "homepage": "https://github.com/nrb2002/founttech-api#readme"
+}

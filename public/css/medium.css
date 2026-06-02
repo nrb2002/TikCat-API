@@ -1,0 +1,46 @@
+@media screen and (max-width: 768px) {
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .nav-links {
+        position: absolute;
+
+        top: 100%;
+        left: 0;
+        right: 0;
+
+        flex-direction: column;
+
+        background: rgba(15, 23, 42, 0.98);
+
+        padding: 1rem 2rem;
+
+        display: none;
+    }
+
+    .nav-links.show {
+        display: flex;
+    }
+
+    .sign-in-btn {
+        display: none;
+    }
+
+    
+
+    .hero-content h1 {
+        font-size: 4rem;
+    }
+
+    .hero-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .users-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

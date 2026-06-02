@@ -1,0 +1,447 @@
+:root {
+    --primary: #09132a;
+    --secondary: #1e293b;
+    --accent: #2563eb;
+    --text: #f8fafc;
+    --glass: rgba(255, 255, 255, .08);
+    --border: rgba(255, 255, 255, .15);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background:
+        linear-gradient(135deg,
+            #020617,
+            #0f172a,
+            #1e293b);
+
+    color: var(--text);
+    font-family: "Segoe UI", sans-serif;
+    min-height: 100vh;
+}
+
+.container {
+    width: min(1100px, 90%);
+    margin: auto;
+}
+
+.navbar {
+    position: sticky;
+    top: 0;
+
+    z-index: 1000;
+
+    backdrop-filter: blur(10px);
+
+    background: rgba(15, 23, 42, 0.85);
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-container {
+    max-width: 1200px;
+
+    margin: 0 auto;
+
+    padding: 1rem 2rem;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+
+    list-style: none;
+}
+
+.nav-links a {
+    color: rgba(255, 255, 255, 0.9);
+
+    text-decoration: none;
+
+    transition: color .3s ease;
+}
+
+.nav-links a:hover {
+    color: white;
+}
+
+.sign-in-btn {
+    background: #2563eb;
+
+    color: white;
+
+    text-decoration: none;
+
+    padding: .75rem 1.5rem;
+
+    border-radius: 8px;
+
+    font-weight: 600;
+
+    transition: .3s ease;
+}
+
+.sign-in-btn:hover {
+    transform: translateY(-2px);
+}
+
+.menu-toggle {
+    display: none;
+
+    background: none;
+    border: none;
+
+    color: white;
+
+    font-size: 1.8rem;
+
+    cursor: pointer;
+}
+
+header {
+    background: linear-gradient(135deg, #0f172a, #1e3a8a);
+    color: white;
+    text-align: center;
+    padding: 8rem 1rem;
+}
+
+header h1 {
+    font-size: clamp(2.5rem, 8vw, 3.5rem);
+    margin-bottom: 1rem;
+}
+
+header p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.hero {
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    padding: 2rem;
+
+    background:
+        linear-gradient(rgba(15, 23, 42, 0.75),
+            rgba(15, 23, 42, 0.75)),
+        url("../images/founttech-hero-2.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    color: white;
+}
+
+.hero-content {
+    max-width: 800px;
+}
+
+.hero h1 {
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    margin-bottom: 1rem;
+    font-weight: 400;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+}
+
+.hero-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.btn {
+    text-decoration: none;
+
+    padding: .9rem 1.8rem;
+
+    border-radius: 6px;
+
+    background: #2563eb;
+    color: white;
+
+    transition: .3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: white;
+    color: #0f172a;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .5rem 1rem;
+    margin-bottom: 2rem;
+    border-radius: 50px;
+    background: rgba(34, 197, 94, 0.2);
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.online {
+    background: #22c55e;
+    border: 1px solid rgba(34, 197, 94, 0.4);
+}
+
+.offline {
+    background: #ef4444;
+    border: 1px solid rgba(197, 34, 34, 0.4);
+}
+
+section {
+    padding: 4rem 0;
+}
+
+section h2 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-size: 1.75rem;
+}
+
+section .about p{
+    text-align: center;
+    max-width: 600px;
+    margin: auto;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: .5rem auto;
+    width: 80%;
+}
+.stats {
+
+    margin-top: 3rem;
+
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.stats .counter{
+    font-size: 1.5rem;
+    font-weight: 700;
+    background-color: var(--glass);
+    border-radius: 50%;
+    padding: 1.5rem 2rem;
+}
+
+.stat-card {
+    background: var(--glass);
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    padding: 1.5rem 2rem;
+    min-width: 170px;
+    text-align: center;
+}
+
+.stat-card span {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #60a5fa;
+}
+
+.status-container {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    margin-bottom: 2rem;
+    padding: .6rem 1rem;
+    border-radius: 999px;
+    background: rgba(34, 197, 94, .15);
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    /* background: #22c55e; */
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, .6);
+    }
+    70% {
+        box-shadow: 0 0 0 12px rgba(34, 197, 94, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+    }
+}
+
+.page-background {
+    background:
+        linear-gradient(rgba(15, 23, 42, 0.82),
+            rgba(15, 23, 42, 0.82)),
+        url("../images/founttech-bg-3.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    color: #f8fafc;
+}
+
+.cards {
+    display: grid;
+    gap: 2rem;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.glass-card {
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem;
+    transition: .3s ease;
+}
+
+.glass-card:hover {
+    transform: translateY(-8px);
+}
+
+.endpoints {
+    background: #eef3ff;
+    color: var(--primary);
+}
+
+.endpoint {
+    background: #0f172a;
+    color: white;
+    padding: 1rem;
+    margin: .75rem 0;
+    border-radius: 6px;
+    font-family: monospace;
+}
+
+.tech-stack ul {
+    list-style: none;
+    text-align: center;
+}
+
+.tech-stack li {
+    margin: .5rem 0;
+}
+
+.target-users,
+.how-it-works {
+    padding: 5rem 0;
+}
+
+.target-users h2,
+.how-it-works h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.section-intro {
+    max-width: 800px;
+    margin: 0 auto 3rem;
+    text-align: center;
+    line-height: 1.8;
+}
+
+.steps {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 2rem;
+    justify-content: center;   
+
+    margin-top: 4rem;
+}
+
+.step {
+    position: relative;
+    color: var(--secondary);
+    background: whitesmoke;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    border-radius: 40%;
+    padding: 3.5rem 2rem 2rem;
+    text-align: center;
+}
+
+.step-number {
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: white;
+    background: #2563eb;
+    border: 4px solid rgba(200, 208, 227, 0.95);
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.step h3 {
+    margin-bottom: 1rem;
+}
+
+.step p {
+    line-height: 1.7;
+}
+
+footer {
+    background: #0f172a;
+    color: white;
+    text-align: center;
+    padding: 1.5rem;
+}
+
