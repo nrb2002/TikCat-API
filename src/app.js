@@ -12,6 +12,8 @@ const startupsRoutes = require("./routes/startups.routes");
 const usersRoutes = require("./routes/users.routes");
 const swaggerRoutes = require("./routes/swagger.routes");
 
+
+
 // Error handler
 const errorHandler = require("./middleware/errorHandler");
 
@@ -98,6 +100,12 @@ app.use("/startups", startupsRoutes);
 // Users API
 app.use("/users", usersRoutes);
 
+//Tickets API
+app.use('/tickets', require('./routes/ticket.route'));
+
+// Orders API
+app.use('/orders', require('./routes/order.route')); 
+ 
 // Swagger Docs
 app.use("/api-docs", swaggerRoutes);
 
