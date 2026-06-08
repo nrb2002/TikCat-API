@@ -5,78 +5,78 @@ const eventSchema = new mongoose.Schema(
     title: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
     },
 
     description: {
       type: String,
-      required: true
+      required: true,
     },
 
     categoryId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
-      required: true
+      required: true,
     },
 
     venueId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Venue",
-      required: true
+      required: true,
     },
 
     organizerId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true
+      required: true,
     },
 
     eventDate: {
       type: Date,
-      required: true
+      required: true,
     },
 
     startTime: {
       type: String,
-      required: true
+      required: true,
     },
 
     endTime: {
       type: String,
-      required: true
+      required: true,
     },
 
     ticketPrice: {
       type: Number,
       required: true,
-      min: 0
+      min: 0,
     },
 
     totalTickets: {
       type: Number,
       required: true,
-      min: 1
+      min: 1,
     },
 
     availableTickets: {
       type: Number,
       required: true,
-      min: 0
+      min: 0,
     },
 
     imageUrl: {
-      type: String
+      type: String,
     },
 
     status: {
       type: String,
       enum: ["draft", "published", "cancelled", "completed"],
-      default: "draft"
-    }
+      default: "draft",
+    },
   },
   {
-    timestamps: true
-  }
+    timestamps: true,
+  },
 );
 
 module.exports = mongoose.model("Event", eventSchema);

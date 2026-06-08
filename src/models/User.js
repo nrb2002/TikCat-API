@@ -5,13 +5,13 @@ const userSchema = new mongoose.Schema(
     firstName: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
     },
 
     lastName: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
     },
 
     email: {
@@ -19,32 +19,32 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
       lowercase: true,
-      trim: true
+      trim: true,
     },
 
     googleId: {
       type: String,
       required: true,
-      unique: true
+      unique: true,
     },
 
     role: {
       type: String,
       enum: ["Admin", "Organizer", "Attendee"],
-      default: "Attendee"
+      default: "Attendee",
     },
 
     profileImage: {
-      type: String
+      type: String,
     },
 
     phoneNumber: {
-      type: String
-    }
+      type: String,
+    },
   },
   {
-    timestamps: true
-  }
+    timestamps: true,
+  },
 );
 
 userSchema.set("toJSON", {
