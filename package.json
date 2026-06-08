@@ -1,5 +1,5 @@
 {
-  "name": "founttech-api",
+  "name": "tikcat-api",
   "version": "1.0.0",
   "description": "A simple RESTful API exposing many resources, including startups data, user authentication, and more.",
   "main": "src/server.js",
@@ -38,10 +38,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nrb2002/founttech-api.git"
+    "url": "git+https://github.com/nrb2002/tikcat-api.git"
   },
   "bugs": {
-    "url": "https://github.com/nrb2002/founttech-api/issues"
+    "url": "https://github.com/nrb2002/tikcat-api/issues"
   },
-  "homepage": "https://github.com/nrb2002/founttech-api#readme"
+  "homepage": "https://github.com/nrb2002/tikcat-api#readme"
 }

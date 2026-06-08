@@ -1,4 +1,4 @@
-const Ticket = require('../models/ticket.model');
+const Ticket = require("../models/ticket.model");
 
 const getAllTickets = async () => {
   return await Ticket.find();
@@ -13,11 +13,10 @@ const createTicket = async (ticketData) => {
 };
 
 const updateTicket = async (id, ticketData) => {
-  return await Ticket.findByIdAndUpdate(
-    id,
-    ticketData,
-    { new: true, runValidators: true }
-  );
+  return await Ticket.findByIdAndUpdate(id, ticketData, {
+    new: true,
+    runValidators: true,
+  });
 };
 
 const deleteTicket = async (id) => {
@@ -29,5 +28,5 @@ module.exports = {
   getTicketById,
   createTicket,
   updateTicket,
-  deleteTicket
+  deleteTicket,
 };

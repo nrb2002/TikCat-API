@@ -28,7 +28,7 @@ router.post(
   authorize("admin"),
   validateTicket,
   validate,
-  ticketController.createTicket
+  ticketController.createTicket,
 );
 
 /* =========================
@@ -41,7 +41,7 @@ router.put(
   validateObjectId,
   validateTicket,
   validate,
-  ticketController.updateTicket
+  ticketController.updateTicket,
 );
 
 /* =========================
@@ -52,7 +52,7 @@ router.delete(
   authenticate,
   authorize("admin"),
   validateObjectId,
-  ticketController.deleteTicket
+  ticketController.deleteTicket,
 );
 
 module.exports = router;

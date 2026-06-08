@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt"); //bcrypt for password hashing
-const User = require("../models/users.model");
+const User = require("../models/User");
 
 const loginUser = async (email, password) => {
   const user = await User.findOne({ email }).select("+password");

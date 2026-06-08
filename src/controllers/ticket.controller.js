@@ -1,4 +1,4 @@
-const ticketService = require('../services/ticket.service');
+const ticketService = require("../services/ticket.service");
 
 const getAllTickets = async (req, res) => {
   try {
@@ -15,7 +15,7 @@ const getTicketById = async (req, res) => {
 
     if (!ticket) {
       return res.status(404).json({
-        message: 'Ticket not found'
+        message: "Ticket not found",
       });
     }
 
@@ -37,14 +37,11 @@ const createTicket = async (req, res) => {
 
 const updateTicket = async (req, res) => {
   try {
-    const ticket = await ticketService.updateTicket(
-      req.params.id,
-      req.body
-    );
+    const ticket = await ticketService.updateTicket(req.params.id, req.body);
 
     if (!ticket) {
       return res.status(404).json({
-        message: 'Ticket not found'
+        message: "Ticket not found",
       });
     }
 
@@ -60,7 +57,7 @@ const deleteTicket = async (req, res) => {
 
     if (!ticket) {
       return res.status(404).json({
-        message: 'Ticket not found'
+        message: "Ticket not found",
       });
     }
 
@@ -75,5 +72,5 @@ module.exports = {
   getTicketById,
   createTicket,
   updateTicket,
-  deleteTicket
+  deleteTicket,
 };

@@ -12,21 +12,12 @@ const validate = require("../middleware/validate");
 /* =========================
    GET ALL ORDERS (ADMIN ONLY)
 ========================= */
-router.get(
-  "/",
-  authenticate,
-  authorize("admin"),
-  orderController.getAllOrders
-);
+router.get("/", authenticate, authorize("admin"), orderController.getAllOrders);
 
 /* =========================
    GET USER ORDERS (LOGGED-IN USER)
 ========================= */
-router.get(
-  "/my-orders",
-  authenticate,
-  orderController.getMyOrders
-);
+router.get("/my-orders", authenticate, orderController.getMyOrders);
 
 /* =========================
    GET ORDER BY ID
@@ -35,7 +26,7 @@ router.get(
   "/:id",
   authenticate,
   validateObjectId,
-  orderController.getOrderById
+  orderController.getOrderById,
 );
 
 /* =========================
@@ -46,7 +37,7 @@ router.post(
   authenticate,
   validateOrder,
   validate,
-  orderController.createOrder
+  orderController.createOrder,
 );
 
 /* =========================
@@ -59,7 +50,7 @@ router.put(
   validateObjectId,
   validateOrder,
   validate,
-  orderController.updateOrder
+  orderController.updateOrder,
 );
 
 /* =========================
@@ -70,7 +61,7 @@ router.delete(
   authenticate,
   authorize("admin"),
   validateObjectId,
-  orderController.deleteOrder
+  orderController.deleteOrder,
 );
 
 module.exports = router;

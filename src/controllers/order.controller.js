@@ -1,4 +1,4 @@
-const orderService = require('../services/order.service');
+const orderService = require("../services/order.service");
 
 const getAllOrders = async (req, res) => {
   try {
@@ -15,7 +15,7 @@ const getOrderById = async (req, res) => {
 
     if (!order) {
       return res.status(404).json({
-        message: 'Order not found'
+        message: "Order not found",
       });
     }
 
@@ -37,14 +37,11 @@ const createOrder = async (req, res) => {
 
 const updateOrder = async (req, res) => {
   try {
-    const order = await orderService.updateOrder(
-      req.params.id,
-      req.body
-    );
+    const order = await orderService.updateOrder(req.params.id, req.body);
 
     if (!order) {
       return res.status(404).json({
-        message: 'Order not found'
+        message: "Order not found",
       });
     }
 
@@ -60,7 +57,7 @@ const deleteOrder = async (req, res) => {
 
     if (!order) {
       return res.status(404).json({
-        message: 'Order not found'
+        message: "Order not found",
       });
     }
 
@@ -75,5 +72,5 @@ module.exports = {
   getOrderById,
   createOrder,
   updateOrder,
-  deleteOrder
+  deleteOrder,
 };

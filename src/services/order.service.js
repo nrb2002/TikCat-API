@@ -1,15 +1,11 @@
-const Order = require('../models/order.model');
+const Order = require("../models/Order");
 
 const getAllOrders = async () => {
-  return await Order.find()
-    .populate('userId')
-    .populate('ticketId');
+  return await Order.find().populate("userId").populate("ticketId");
 };
 
 const getOrderById = async (id) => {
-  return await Order.findById(id)
-    .populate('userId')
-    .populate('ticketId');
+  return await Order.findById(id).populate("userId").populate("ticketId");
 };
 
 const createOrder = async (orderData) => {
@@ -17,11 +13,10 @@ const createOrder = async (orderData) => {
 };
 
 const updateOrder = async (id, orderData) => {
-  return await Order.findByIdAndUpdate(
-    id,
-    orderData,
-    { new: true, runValidators: true }
-  );
+  return await Order.findByIdAndUpdate(id, orderData, {
+    new: true,
+    runValidators: true,
+  });
 };
 
 const deleteOrder = async (id) => {
@@ -33,5 +28,5 @@ module.exports = {
   getOrderById,
   createOrder,
   updateOrder,
-  deleteOrder
+  deleteOrder,
 };
