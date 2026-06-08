@@ -5,41 +5,41 @@ const venueSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
     },
 
     address: {
       type: String,
-      required: true
+      required: true,
     },
 
     city: {
       type: String,
-      required: true
+      required: true,
     },
 
     capacity: {
       type: Number,
       required: true,
-      min: 1
+      min: 1,
     },
 
     contactPhone: {
-      type: String
+      type: String,
     },
 
     imageUrl: {
-      type: String
+      type: String,
     },
 
     ownerId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User"
-    }
+      ref: "User",
+    },
   },
   {
-    timestamps: true
-  }
+    timestamps: true,
+  },
 );
 
 module.exports = mongoose.model("Venue", venueSchema);

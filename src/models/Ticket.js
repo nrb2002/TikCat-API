@@ -5,39 +5,39 @@ const ticketSchema = new mongoose.Schema(
     eventId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Event",
-      required: true
+      required: true,
     },
 
     attendeeId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true
+      required: true,
     },
 
     ticketCode: {
       type: String,
       required: true,
-      unique: true
+      unique: true,
     },
 
     qrCode: {
-      type: String
+      type: String,
     },
 
     status: {
       type: String,
       enum: ["reserved", "paid", "used", "cancelled"],
-      default: "reserved"
+      default: "reserved",
     },
 
     purchaseDate: {
       type: Date,
-      default: Date.now
-    }
+      default: Date.now,
+    },
   },
   {
-    timestamps: true
-  }
+    timestamps: true,
+  },
 );
 
 module.exports = mongoose.model("Ticket", ticketSchema);

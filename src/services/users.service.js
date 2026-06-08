@@ -1,38 +1,19 @@
-const bcrypt = require("bcrypt"); //bcrypt for password hashing
 const User = require("../models/User");
 
-const loginUser = async (email, password) => {
-  const user = await User.findOne({ email }).select("+password");
+const getAllUsers = async () => {
+  return await User.find();
+};
+
+const getSingleUser = async (id) => {
+  const user = await User.findById(id);
 
   if (!user) {
-    const error = new Error();
-    error.statusCode = 401;
-    error.type = "INVALID_CREDENTIALS";
-    throw error;
-  }
-
-  const passwordMatch = await bcrypt.compare(password, user.password);
-
-  if (!passwordMatch) {
-    const error = new Error();
-    error.statusCode = 401;
-    error.type = "INVALID_CREDENTIALS";
+    const error = new Error("User not found!");
+    error.statusCode = 404;
     throw error;
   }
 
   return user;
-};
-
-const getAllUsers = async () => {
-  return await User.find()
-    .select("-password")
-    .populate("startups", "name industry foundedYear");
-};
-
-const getSingleUser = async (id) => {
-  return await User.findById(id)
-    .select("-password")
-    .populate("startups", "name industry foundedYear");
 };
 
 const createUser = async (data) => {
@@ -40,6 +21,9 @@ const createUser = async (data) => {
 };
 
 const updateUser = async (id, data) => {
+  delete data.googleId;
+  delete data.email;
+
   return await User.findByIdAndUpdate(id, data, {
     new: true,
     runValidators: true,
@@ -56,5 +40,4 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
-  loginUser,
 };
