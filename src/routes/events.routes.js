@@ -1,6 +1,6 @@
 const express = require("express");
 
-const controller = require("../controllers/users.controller");
+const controller = require("../controllers/events.controller");
 
 const authenticate = require("../middleware/authenticate");
 const authorize = require("../middleware/authorize");
@@ -9,37 +9,38 @@ const asyncHandler = require("../utils/asyncHandler");
 
 const router = express.Router();
 
-// Get all users (Admin only)
 router.get(
   "/",
-  authenticate,
-  authorize("admin"),
-  asyncHandler(controller.getAllUsers)
+  asyncHandler(controller.getAllEvents)
 );
 
-// Get single user (self or admin logic handled in controller/service)
 router.get(
   "/:id",
-  authenticate,
   validateObjectId,
-  asyncHandler(controller.getUserById)
+  asyncHandler(controller.getEventById)
 );
 
-// Update user (IMPORTANT: should be restricted properly)
+router.post(
+  "/",
+  authenticate,
+  authorize("admin", "organizer"),
+  asyncHandler(controller.createEvent)
+);
+
 router.put(
   "/:id",
   authenticate,
+  authorize("admin", "organizer"),
   validateObjectId,
-  asyncHandler(controller.updateUser)
+  asyncHandler(controller.updateEvent)
 );
 
-// Delete user (Admin only)
 router.delete(
   "/:id",
   authenticate,
-  authorize("admin"),
+  authorize("admin", "organizer"),
   validateObjectId,
-  asyncHandler(controller.deleteUser)
+  asyncHandler(controller.deleteEvent)
 );
 
 module.exports = router;

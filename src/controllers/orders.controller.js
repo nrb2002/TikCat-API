@@ -1,4 +1,5 @@
-const orderService = require("../services/order.service");
+const orderService = require("../services/orders.service");
+const AppError = require("../utils/AppError");
 
 const getAllOrders = async (req, res) => {
   const orders = await orderService.getAllOrders();
@@ -7,22 +8,24 @@ const getAllOrders = async (req, res) => {
 };
 
 const getOrderById = async (req, res) => {
-  const order = await orderService.getOrderById(req.params.id);
+  const { id } = req.params;
+
+  const order = await orderService.getOrderById(id);
 
   if (!order) {
-    return res.status(404).json({
-      message: "Order not found",
-    });
+    throw new AppError("Order not found", 404);
   }
 
   res.status(200).json(order);
 };
 
 const createOrder = async (req, res) => {
+  const { eventId, quantity } = req.body;
+
   const order = await orderService.createOrder(
     req.user.userId,
-    req.body.eventId,
-    req.body.quantity,
+    eventId,
+    quantity
   );
 
   res.status(201).json(order);

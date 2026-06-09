@@ -1,4 +1,5 @@
 const Event = require("../models/Event");
+const AppError = require("../utils/AppError");
 
 const getAllEvents = async () => {
   return Event.find()
@@ -9,13 +10,23 @@ const getAllEvents = async () => {
 };
 
 const getEventById = async (id) => {
-  return Event.findById(id)
+  const event = await Event.findById(id)
     .populate("categoryId")
     .populate("venueId")
     .populate("organizerId", "firstName lastName email");
+
+  if (!event) {
+    throw new AppError("Event not found", 404);
+  }
+
+  return event;
 };
 
 const createEvent = async (data, organizerId) => {
+  if (!data?.totalTickets) {
+    throw new AppError("totalTickets is required", 400);
+  }
+
   return Event.create({
     ...data,
     organizerId,
@@ -24,14 +35,30 @@ const createEvent = async (data, organizerId) => {
 };
 
 const updateEvent = async (id, data) => {
-  return Event.findByIdAndUpdate(id, data, {
+  // prevent critical field tampering
+  delete data.organizerId;
+  delete data.availableTickets;
+
+  const event = await Event.findByIdAndUpdate(id, data, {
     new: true,
     runValidators: true,
   });
+
+  if (!event) {
+    throw new AppError("Event not found", 404);
+  }
+
+  return event;
 };
 
 const deleteEvent = async (id) => {
-  return Event.findByIdAndDelete(id);
+  const event = await Event.findByIdAndDelete(id);
+
+  if (!event) {
+    throw new AppError("Event not found", 404);
+  }
+
+  return event;
 };
 
 const getEventsByCategory = async (categoryId) => {

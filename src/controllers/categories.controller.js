@@ -1,4 +1,5 @@
-const categoryService = require("../services/category.service");
+const categoryService = require("../services/categories.service");
+const AppError = require("../utils/AppError");
 
 const getAllCategories = async (req, res) => {
   const categories = await categoryService.getAllCategories();
@@ -10,9 +11,7 @@ const getCategoryById = async (req, res) => {
   const category = await categoryService.getCategoryById(req.params.id);
 
   if (!category) {
-    return res.status(404).json({
-      message: "Category not found",
-    });
+    throw new AppError("Category not found", 404);
   }
 
   res.status(200).json(category);
@@ -27,13 +26,11 @@ const createCategory = async (req, res) => {
 const updateCategory = async (req, res) => {
   const category = await categoryService.updateCategory(
     req.params.id,
-    req.body,
+    req.body
   );
 
   if (!category) {
-    return res.status(404).json({
-      message: "Category not found",
-    });
+    throw new AppError("Category not found", 404);
   }
 
   res.status(200).json(category);
@@ -43,9 +40,7 @@ const deleteCategory = async (req, res) => {
   const category = await categoryService.deleteCategory(req.params.id);
 
   if (!category) {
-    return res.status(404).json({
-      message: "Category not found",
-    });
+    throw new AppError("Category not found", 404);
   }
 
   res.status(204).send();

@@ -1,4 +1,5 @@
-const ticketService = require("../services/ticket.service");
+const ticketService = require("../services/tickets.service");
+const AppError = require("../utils/AppError");
 
 const getAllTickets = async (req, res) => {
   const tickets = await ticketService.getAllTickets();
@@ -7,24 +8,24 @@ const getAllTickets = async (req, res) => {
 };
 
 const getTicketById = async (req, res) => {
-  const ticket = await ticketService.getTicketById(req.params.id);
+  const { id } = req.params;
+
+  const ticket = await ticketService.getTicketById(id);
 
   if (!ticket) {
-    return res.status(404).json({
-      message: "Ticket not found",
-    });
+    throw new AppError("Ticket not found", 404);
   }
 
   res.status(200).json(ticket);
 };
 
 const validateTicket = async (req, res) => {
-  const ticket = await ticketService.validateTicket(req.params.id);
+  const { id } = req.params;
+
+  const ticket = await ticketService.validateTicket(id);
 
   if (!ticket) {
-    return res.status(404).json({
-      message: "Ticket not found",
-    });
+    throw new AppError("Ticket not found", 404);
   }
 
   res.status(200).json(ticket);

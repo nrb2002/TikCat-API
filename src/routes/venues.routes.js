@@ -1,6 +1,6 @@
 const express = require("express");
 
-const controller = require("../controllers/users.controller");
+const controller = require("../controllers/venues.controller");
 
 const authenticate = require("../middleware/authenticate");
 const authorize = require("../middleware/authorize");
@@ -9,37 +9,43 @@ const asyncHandler = require("../utils/asyncHandler");
 
 const router = express.Router();
 
-// Get all users (Admin only)
+// Get all venues (public or authenticated depending on your policy)
 router.get(
   "/",
-  authenticate,
-  authorize("admin"),
-  asyncHandler(controller.getAllUsers)
+  asyncHandler(controller.getAllVenues)
 );
 
-// Get single user (self or admin logic handled in controller/service)
+// Get single venue
 router.get(
   "/:id",
-  authenticate,
   validateObjectId,
-  asyncHandler(controller.getUserById)
+  asyncHandler(controller.getVenueById)
 );
 
-// Update user (IMPORTANT: should be restricted properly)
+// Create venue (admin + organizer)
+router.post(
+  "/",
+  authenticate,
+  authorize("admin", "organizer"),
+  asyncHandler(controller.createVenue)
+);
+
+// Update venue
 router.put(
   "/:id",
   authenticate,
+  authorize("admin", "organizer"),
   validateObjectId,
-  asyncHandler(controller.updateUser)
+  asyncHandler(controller.updateVenue)
 );
 
-// Delete user (Admin only)
+// Delete venue (admin only)
 router.delete(
   "/:id",
   authenticate,
   authorize("admin"),
   validateObjectId,
-  asyncHandler(controller.deleteUser)
+  asyncHandler(controller.deleteVenue)
 );
 
 module.exports = router;

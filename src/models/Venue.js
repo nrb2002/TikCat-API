@@ -4,42 +4,52 @@ const venueSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: [true, "Venue name is required"],
       trim: true,
+      index: true,
     },
 
     address: {
       type: String,
-      required: true,
+      required: [true, "Address is required"],
+      trim: true,
     },
 
     city: {
       type: String,
-      required: true,
+      required: [true, "City is required"],
+      index: true,
+      trim: true,
     },
 
     capacity: {
       type: Number,
-      required: true,
-      min: 1,
+      required: [true, "Capacity is required"],
+      min: [1, "Capacity must be at least 1"],
+      index: true,
     },
 
     contactPhone: {
       type: String,
+      default: null,
+      trim: true,
     },
 
     imageUrl: {
       type: String,
+      default: null,
     },
 
     ownerId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: [true, "Owner is required"],
+      index: true,
     },
   },
   {
     timestamps: true,
-  },
+  }
 );
 
 module.exports = mongoose.model("Venue", venueSchema);

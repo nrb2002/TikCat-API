@@ -1,33 +1,7 @@
-const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
-/**
-  Responsibilities:
-
-  Create JWT tokens
-  Find or create OAuth users
-  Logout logic
-  Token validation
-
- */
-
-const generateToken = (user) => {
-  return jwt.sign(
-    {
-      userId: user._id,
-      role: user.role,
-    },
-    process.env.JWT_SECRET,
-    {
-      expiresIn: "7d",
-    },
-  );
-};
-
 const findOrCreateUser = async (profile) => {
-  let user = await User.findOne({
-    googleId: profile.id,
-  });
+  let user = await User.findOne({ googleId: profile.id });
 
   if (!user) {
     user = await User.create({
@@ -43,6 +17,5 @@ const findOrCreateUser = async (profile) => {
 };
 
 module.exports = {
-  generateToken,
   findOrCreateUser,
 };

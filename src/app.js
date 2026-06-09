@@ -6,12 +6,6 @@ const passport = require("passport");
 const session = require("express-session");
 const GitHubStrategy = require("passport-github2").Strategy;
 
-// Import routes
-const defaultRoute = require("./routes/index");
-const startupsRoutes = require("./routes/startups.routes");
-const usersRoutes = require("./routes/users.routes");
-const swaggerRoutes = require("./routes/swagger.routes");
-
 // Error handler
 const errorHandler = require("./middleware/errorHandler");
 
@@ -89,23 +83,21 @@ app.use(express.static(path.join(__dirname, "../public")));
    API ROUTES
 ========================= */
 
-// Homepage
-app.use("/", defaultRoute);
+// Homepage route
+app.use("/", require("./routes/index"));
 
-// Startups API
-app.use("/startups", startupsRoutes);
-
-// Users API
-app.use("/users", usersRoutes);
-
-//Tickets API
-app.use("/tickets", require("./routes/ticket.route"));
-
-// Orders API
-app.use("/orders", require("./routes/order.route"));
+// Other API routes
+app.use("/auth", require("./routes/auth.routes"));
+app.use("/users", require("./routes/users.routes"));
+app.use("/events", require("./routes/events.routes"));
+app.use("/tickets", require("./routes/tickets.routes"));
+app.use("/orders", require("./routes/orders.routes"));
+app.use("/venues", require("./routes/venues.routes"));
+app.use("/categories", require("./routes/categories.routes"));
+app.use("/dashboard", require("./routes/dashboard.routes"));
 
 // Swagger Docs
-app.use("/api-docs", swaggerRoutes);
+app.use("/api-docs", require("./routes/swagger.routes"));
 
 /* =========================
    GITHUB AUTH ROUTES
