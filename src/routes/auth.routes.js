@@ -11,7 +11,7 @@ router.get(
   "/google",
   passport.authenticate("google", {
     scope: ["profile", "email"],
-  })
+  }),
 );
 
 // Google OAuth callback
@@ -21,13 +21,10 @@ router.get(
     session: false,
     failureRedirect: "/login",
   }),
-  asyncHandler(authController.googleCallback)
+  asyncHandler(authController.googleCallback),
 );
 
 // Logout (should be POST, not GET)
-router.post(
-  "/logout",
-  asyncHandler(authController.logout)
-);
+router.post("/logout", asyncHandler(authController.logout));
 
 module.exports = router;

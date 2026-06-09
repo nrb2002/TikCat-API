@@ -9,22 +9,15 @@ const asyncHandler = require("../utils/asyncHandler");
 
 const router = express.Router();
 
-router.get(
-  "/",
-  asyncHandler(controller.getAllCategories)
-);
+router.get("/", asyncHandler(controller.getAllCategories));
 
-router.get(
-  "/:id",
-  validateObjectId,
-  asyncHandler(controller.getCategoryById)
-);
+router.get("/:id", validateObjectId, asyncHandler(controller.getCategoryById));
 
 router.post(
   "/",
   authenticate,
   authorize("admin"),
-  asyncHandler(controller.createCategory)
+  asyncHandler(controller.createCategory),
 );
 
 router.put(
@@ -32,7 +25,7 @@ router.put(
   authenticate,
   authorize("admin"),
   validateObjectId,
-  asyncHandler(controller.updateCategory)
+  asyncHandler(controller.updateCategory),
 );
 
 router.delete(
@@ -40,7 +33,7 @@ router.delete(
   authenticate,
   authorize("admin"),
   validateObjectId,
-  asyncHandler(controller.deleteCategory)
+  asyncHandler(controller.deleteCategory),
 );
 
 module.exports = router;

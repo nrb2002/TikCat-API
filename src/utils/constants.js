@@ -1,29 +1,10 @@
-const ROLES = [
-  "admin",
-  "organizer",
-  "attendee",
-  "developer",
-];
+const ROLES = ["admin", "organizer", "attendee", "developer"];
 
-const EVENT_STATUS = [
-  "draft",
-  "published",
-  "cancelled",
-  "completed",
-];
+const EVENT_STATUS = ["draft", "published", "cancelled", "completed"];
 
-const PAYMENT_STATUS = [
-  "pending",
-  "paid",
-  "refunded",
-];
+const PAYMENT_STATUS = ["pending", "paid", "refunded"];
 
-const TICKET_STATUS = [
-  "reserved",
-  "paid",
-  "used",
-  "cancelled",
-];
+const TICKET_STATUS = ["reserved", "paid", "used", "cancelled"];
 
 module.exports = {
   ROLES,

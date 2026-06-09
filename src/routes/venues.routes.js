@@ -10,24 +10,17 @@ const asyncHandler = require("../utils/asyncHandler");
 const router = express.Router();
 
 // Get all venues (public or authenticated depending on your policy)
-router.get(
-  "/",
-  asyncHandler(controller.getAllVenues)
-);
+router.get("/", asyncHandler(controller.getAllVenues));
 
 // Get single venue
-router.get(
-  "/:id",
-  validateObjectId,
-  asyncHandler(controller.getVenueById)
-);
+router.get("/:id", validateObjectId, asyncHandler(controller.getVenueById));
 
 // Create venue (admin + organizer)
 router.post(
   "/",
   authenticate,
   authorize("admin", "organizer"),
-  asyncHandler(controller.createVenue)
+  asyncHandler(controller.createVenue),
 );
 
 // Update venue
@@ -36,7 +29,7 @@ router.put(
   authenticate,
   authorize("admin", "organizer"),
   validateObjectId,
-  asyncHandler(controller.updateVenue)
+  asyncHandler(controller.updateVenue),
 );
 
 // Delete venue (admin only)
@@ -45,7 +38,7 @@ router.delete(
   authenticate,
   authorize("admin"),
   validateObjectId,
-  asyncHandler(controller.deleteVenue)
+  asyncHandler(controller.deleteVenue),
 );
 
 module.exports = router;

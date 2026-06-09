@@ -18,19 +18,13 @@ const getEventById = async (req, res) => {
 };
 
 const createEvent = async (req, res) => {
-  const event = await eventService.createEvent(
-    req.body,
-    req.user.userId
-  );
+  const event = await eventService.createEvent(req.body, req.user.userId);
 
   res.status(201).json(event);
 };
 
 const updateEvent = async (req, res) => {
-  const event = await eventService.updateEvent(
-    req.params.id,
-    req.body
-  );
+  const event = await eventService.updateEvent(req.params.id, req.body);
 
   if (!event) {
     throw new AppError("Event not found", 404);

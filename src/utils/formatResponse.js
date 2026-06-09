@@ -1,8 +1,4 @@
-const formatResponse = (
-  success,
-  message,
-  data = null
-) => {
+const formatResponse = (success, message, data = null) => {
   return {
     success,
     message,

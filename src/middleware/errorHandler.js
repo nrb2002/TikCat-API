@@ -16,9 +16,7 @@ const errorHandler = (err, req, res, next) => {
     return res.status(400).json({
       success: false,
       message: "Validation failed",
-      errors: Object.values(err.errors).map(
-        (error) => error.message
-      ),
+      errors: Object.values(err.errors).map((error) => error.message),
     });
   }
 
@@ -31,10 +29,7 @@ const errorHandler = (err, req, res, next) => {
   }
 
   // Authentication errors
-  if (
-    err.type === "MISSING_TOKEN" ||
-    err.type === "UNAUTHENTICATED"
-  ) {
+  if (err.type === "MISSING_TOKEN" || err.type === "UNAUTHENTICATED") {
     return res.status(401).json({
       success: false,
       message: "Authentication required",
@@ -45,8 +40,7 @@ const errorHandler = (err, req, res, next) => {
   if (err.type === "FORBIDDEN") {
     return res.status(403).json({
       success: false,
-      message:
-        "You are not authorized to perform this action",
+      message: "You are not authorized to perform this action",
     });
   }
 
@@ -69,8 +63,7 @@ const errorHandler = (err, req, res, next) => {
   // Default fallback
   return res.status(err.statusCode || 500).json({
     success: false,
-    message:
-      err.message || "Internal Server Error",
+    message: err.message || "Internal Server Error",
 
     ...(process.env.NODE_ENV === "development" && {
       stack: err.stack,

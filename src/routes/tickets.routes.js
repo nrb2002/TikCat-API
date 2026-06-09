@@ -1,6 +1,6 @@
 const express = require("express");
 
-const controller = require("../controllers/ticket.controller");
+const controller = require("../controllers/tickets.controller");
 
 const authenticate = require("../middleware/authenticate");
 const authorize = require("../middleware/authorize");
@@ -14,7 +14,7 @@ router.get(
   "/",
   authenticate,
   authorize("admin", "organizer"),
-  asyncHandler(controller.getAllTickets)
+  asyncHandler(controller.getAllTickets),
 );
 
 // Get single ticket
@@ -22,7 +22,7 @@ router.get(
   "/:id",
   authenticate,
   validateObjectId,
-  asyncHandler(controller.getTicketById)
+  asyncHandler(controller.getTicketById),
 );
 
 // Validate ticket (QR scan / check-in)
@@ -31,7 +31,7 @@ router.patch(
   authenticate,
   authorize("admin", "organizer"),
   validateObjectId,
-  asyncHandler(controller.validateTicket)
+  asyncHandler(controller.validateTicket),
 );
 
 module.exports = router;

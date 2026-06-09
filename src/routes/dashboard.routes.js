@@ -12,7 +12,7 @@ router.get(
   "/stats",
   authenticate,
   authorize("admin"),
-  asyncHandler(controller.getDashboardStats)
+  asyncHandler(controller.getDashboardStats),
 );
 
 module.exports = router;

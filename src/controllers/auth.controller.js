@@ -1,5 +1,5 @@
 const authService = require("../services/auth.service");
-const generateToken = require("../utils/generateT
+const generateToken = require("../utils/generateToken");
 
 const googleCallback = async (req, res) => {
   const token = authService.generateToken(req.user);

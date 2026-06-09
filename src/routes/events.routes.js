@@ -9,22 +9,15 @@ const asyncHandler = require("../utils/asyncHandler");
 
 const router = express.Router();
 
-router.get(
-  "/",
-  asyncHandler(controller.getAllEvents)
-);
+router.get("/", asyncHandler(controller.getAllEvents));
 
-router.get(
-  "/:id",
-  validateObjectId,
-  asyncHandler(controller.getEventById)
-);
+router.get("/:id", validateObjectId, asyncHandler(controller.getEventById));
 
 router.post(
   "/",
   authenticate,
   authorize("admin", "organizer"),
-  asyncHandler(controller.createEvent)
+  asyncHandler(controller.createEvent),
 );
 
 router.put(
@@ -32,7 +25,7 @@ router.put(
   authenticate,
   authorize("admin", "organizer"),
   validateObjectId,
-  asyncHandler(controller.updateEvent)
+  asyncHandler(controller.updateEvent),
 );
 
 router.delete(
@@ -40,7 +33,7 @@ router.delete(
   authenticate,
   authorize("admin", "organizer"),
   validateObjectId,
-  asyncHandler(controller.deleteEvent)
+  asyncHandler(controller.deleteEvent),
 );
 
 module.exports = router;

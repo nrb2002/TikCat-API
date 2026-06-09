@@ -26,7 +26,7 @@ const createCategory = async (req, res) => {
 const updateCategory = async (req, res) => {
   const category = await categoryService.updateCategory(
     req.params.id,
-    req.body
+    req.body,
   );
 
   if (!category) {

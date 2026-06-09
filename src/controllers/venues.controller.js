@@ -1,4 +1,4 @@
-const venueService = require("../services/venue.service");
+const venueService = require("../services/venues.service");
 
 const getAllVenues = async (req, res) => {
   const venues = await venueService.getAllVenues();

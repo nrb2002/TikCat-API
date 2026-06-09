@@ -80,7 +80,7 @@ const createOrder = async (userId, eventId, quantity) => {
               status: "paid",
             },
           ],
-          { session }
+          { session },
         );
 
         const createdTicket = ticket[0];
@@ -113,7 +113,7 @@ const createOrder = async (userId, eventId, quantity) => {
             paymentStatus: "paid",
           },
         ],
-        { session }
+        { session },
       );
 
       createdOrder = order[0];

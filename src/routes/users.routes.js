@@ -14,7 +14,7 @@ router.get(
   "/",
   authenticate,
   authorize("admin"),
-  asyncHandler(controller.getAllUsers)
+  asyncHandler(controller.getAllUsers),
 );
 
 // Get single user (self or admin logic handled in controller/service)
@@ -22,7 +22,7 @@ router.get(
   "/:id",
   authenticate,
   validateObjectId,
-  asyncHandler(controller.getUserById)
+  asyncHandler(controller.getUserById),
 );
 
 // Update user (IMPORTANT: should be restricted properly)
@@ -30,7 +30,7 @@ router.put(
   "/:id",
   authenticate,
   validateObjectId,
-  asyncHandler(controller.updateUser)
+  asyncHandler(controller.updateUser),
 );
 
 // Delete user (Admin only)
@@ -39,7 +39,7 @@ router.delete(
   authenticate,
   authorize("admin"),
   validateObjectId,
-  asyncHandler(controller.deleteUser)
+  asyncHandler(controller.deleteUser),
 );
 
 module.exports = router;

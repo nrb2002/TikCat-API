@@ -25,7 +25,7 @@ const createOrder = async (req, res) => {
   const order = await orderService.createOrder(
     req.user.userId,
     eventId,
-    quantity
+    quantity,
   );
 
   res.status(201).json(order);

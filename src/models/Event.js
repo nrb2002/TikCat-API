@@ -87,17 +87,13 @@ const eventSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 // Prevent overbooking logic
 eventSchema.pre("save", function (next) {
   if (this.availableTickets > this.totalTickets) {
-    return next(
-      new Error(
-        "Available tickets cannot exceed total tickets"
-      )
-    );
+    return next(new Error("Available tickets cannot exceed total tickets"));
   }
   next();
 });

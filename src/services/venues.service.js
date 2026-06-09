@@ -16,7 +16,7 @@ const getAllVenues = async () => {
 const getVenueById = async (id) => {
   const venue = await Venue.findById(id).populate(
     "ownerId",
-    "firstName lastName email"
+    "firstName lastName email",
   );
 
   if (!venue) {
