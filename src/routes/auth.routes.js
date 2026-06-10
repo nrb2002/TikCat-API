@@ -10,7 +10,7 @@ const router = express.Router();
 router.get(
   "/google",
   /*
-    #swagger.tags = ['Authentication']
+    #swagger.tags = ['Google Authentication (For browser use only)']
     #swagger.summary = 'Redirect to Google OAuth'
     #swagger.description = 'Initiates Google OAuth2 login flow. Redirects user to Google consent screen.'
   */
@@ -23,7 +23,7 @@ router.get(
 router.get(
   "/google/callback",
   /*
-    #swagger.tags = ['Authentication']
+    #swagger.tags = ['Google Authentication (For browser use only)']
     #swagger.summary = 'Google OAuth callback'
     #swagger.description = 'Handles Google OAuth callback and returns authenticated user data + token.'
 
@@ -66,7 +66,7 @@ router.get(
 router.post(
   "/logout",
   /*
-    #swagger.tags = ['Authentication']
+    #swagger.tags = ['Google Authentication (For browser use only)']
     #swagger.summary = 'Logout user'
     #swagger.description = 'Logs out the authenticated user (JWT or session-based).'
 
