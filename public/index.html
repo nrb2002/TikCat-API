@@ -26,21 +26,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TikCat API</title>
 
-```
-<link rel="stylesheet" href="/css/base.css">
-<link rel="stylesheet" href="/css/medium.css">
-<link rel="stylesheet" href="/css/larger.css">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/medium.css">
+    <link rel="stylesheet" href="/css/larger.css">
 
-<script src="/js/navBar.js" defer></script>
-<script src="/js/main.js" defer></script>
-<script src="/js/stats.js" defer></script>
-```
+    <script src="/js/navBar.js" defer></script>
+    <script src="/js/main.js" defer></script>
+    <script src="/js/stats.js" defer></script>
 
 </head>
 
 <body>
 
-```
+
 <!-- NAVIGATION -->
 <nav class="navbar">
     <div class="nav-container">
@@ -60,8 +58,8 @@
             <li><a href="/api-docs" target="_blank">Documentation</a></li>
         </ul>
 
-        <a href="/api-docs" target="_blank" class="sign-in-btn">
-            API Docs
+        <a href="/login" class="sign-in-btn">
+            Sign in
         </a>
 
     </div>
@@ -70,6 +68,17 @@
 <!-- HERO SECTION -->
 <header class="hero">
 
+    <!-- Video background -->
+    <div class="hero-video">
+        <video autoplay muted loop playsinline>
+            <source src="videos/hero-tikcat.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <!-- Dark overlay for contrast -->
+    <div class="hero-overlay"></div>
+
+    <!-- Existing content (unchanged) -->
     <div class="hero-content">
 
         <div class="status-badge online">
@@ -395,7 +404,7 @@
     </p>
 
 </footer>
-```
+
 
 </body>
 

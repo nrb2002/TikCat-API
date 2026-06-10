@@ -1,13 +1,16 @@
 :root {
-    --primary: #0099ff;
-    --primary-dark: #0077cc;
-    --secondary: #00d4ff;
-    --dark: #0f172a;
-    --dark-light: #1e293b;
+    --primary: #0a5fb8;        /* darker, strong contrast with white */
+    --primary-dark: #064a92;   /* hover/active state */
+    --secondary: #007a8f;      /* deep cyan, readable on light bg */
+
+    --dark: #0b1220;           /* slightly deeper than before */
+    --dark-light: #172033;     /* improved separation for UI layers */
+
     --light: #ffffff;
-    --text: #334155;
-    --border: #e2e8f0;
-    --bg: #f8fafc;
+
+    --text: #111827;           /* near-black for strong readability */
+    --border: #cbd5e1;         /* clearer separation */
+    --bg: #f1f5f9;             /* slightly darker background improves contrast system-wide */
 }
 
 * {
@@ -48,7 +51,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 0;
+    padding: 1rem 2rem;
 }
 
 .logo {
@@ -109,11 +112,26 @@ body {
     color: white;
     text-align: center;
     padding: 6rem 1rem;
+
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    color: var(--light);
 }
+
 
 .hero-content {
     max-width: 900px;
     margin: auto;
+    
+    position: relative;
+    z-index: 2;
+    max-width: 1000px;
+    padding: 2rem;
+    text-align: center;
 }
 
 .hero h1 {
@@ -126,6 +144,28 @@ body {
     max-width: 750px;
     margin: auto auto 2rem;
 }
+
+/* VIDEO LAYER */
+.hero-video {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.hero-video video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* DARK OVERLAY (fixes contrast issues) */
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
 
 .status-badge {
     display: inline-flex;
@@ -174,14 +214,16 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
     gap: 1.5rem;
-    margin-top: 4rem;
+    margin-top: 2rem;
 }
 
 .stat-card {
-    background: rgba(255,255,255,.15);
-    backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 2rem;
+
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .stat-card span {
