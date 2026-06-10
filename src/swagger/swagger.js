@@ -31,7 +31,7 @@ const doc = {
       lastName: "Doe",
       email: "john@example.com",
       role: "Attendee",
-      profileImage: "https://example.com/profile.jpg",
+      profileImage: "/public/images/profile.jpg",
       phoneNumber: "+243812345678",
     },
 

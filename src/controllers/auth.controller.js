@@ -6,7 +6,7 @@ const googleCallback = async (req, res) => {
 
   res.status(200).json({
     success: true,
-    message: "Authentication successful",
+    message: "Authentication successful!",
     data: {
       token,
       user: req.user,
@@ -18,7 +18,7 @@ const logout = async (req, res) => {
   req.logout(() => {
     res.status(200).json({
       success: true,
-      message: "Logged out successfully",
+      message: "Logged out successfully!",
     });
   });
 };

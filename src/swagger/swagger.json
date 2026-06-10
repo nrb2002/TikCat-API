@@ -1192,7 +1192,7 @@
         },
         "profileImage": {
           "type": "string",
-          "example": "https://example.com/profile.jpg"
+          "example": "/public/images/profile.jpg"
         },
         "phoneNumber": {
           "type": "string",
