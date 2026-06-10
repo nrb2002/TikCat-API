@@ -15,7 +15,7 @@
       "type": "apiKey",
       "in": "header",
       "name": "Authorization",
-      "description": "Enter JWT token as: 'Bearer + <token>'"
+      "description": "Enter JWT token as: 'Bearer' + JW Token "
     }
   },
   "paths": {
@@ -31,7 +31,11 @@
     },
     "/auth/google": {
       "get": {
-        "description": "",
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Redirect to Google OAuth",
+        "description": "Initiates Google OAuth2 login flow. Redirects user to Google consent screen.",
         "responses": {
           "default": {
             "description": ""
@@ -41,22 +45,96 @@
     },
     "/auth/google/callback": {
       "get": {
-        "description": "",
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Google OAuth callback",
+        "description": "Handles Google OAuth callback and returns authenticated user data + token.",
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Authentication successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Login successful"
+                    },
+                    "token": {
+                      "type": "string",
+                      "example": "jwt_token_here"
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "example": "64f1c2..."
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "user@gmail.com"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "John Doe"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication failed"
           }
         }
       }
     },
     "/auth/logout": {
       "post": {
-        "description": "",
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Logout user",
+        "description": "Logs out the authenticated user (JWT or session-based).",
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Logout successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Logged out successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - user not authenticated"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/users/": {
@@ -64,7 +142,7 @@
         "tags": [
           "Users"
         ],
-        "summary": "Get all users",
+        "summary": "Get all users (Admins only)",
         "description": "",
         "parameters": [
           {
@@ -90,7 +168,7 @@
         "tags": [
           "Users"
         ],
-        "summary": "Get user by ID",
+        "summary": "Get user by ID (Must be authenticated)",
         "description": "",
         "parameters": [
           {
@@ -120,22 +198,53 @@
         "tags": [
           "Users"
         ],
-        "summary": "Update user",
-        "description": "",
+        "summary": "Update user profile",
+        "description": "Updates user information. Email, Google ID and role cannot be modified.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "User ID"
           },
           {
             "name": "authorization",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "User profile information",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "type": "string",
+                  "example": "Baron"
+                },
+                "lastName": {
+                  "type": "string",
+                  "example": "Mboka"
+                },
+                "phoneNumber": {
+                  "type": "string",
+                  "example": "+243812345678"
+                },
+                "profileImage": {
+                  "type": "string",
+                  "example": "https://example.com/avatar.jpg"
+                }
+              }
+            }
           }
         ],
         "responses": {
+          "200": {
+            "description": "User updated successfully"
+          },
           "400": {
             "description": "Bad Request"
           }
@@ -166,6 +275,9 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "User deleted successfully!"
+          },
           "400": {
             "description": "Bad Request"
           }
@@ -179,170 +291,32 @@
     },
     "/events/": {
       "get": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      },
-      "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
+        "tags": [
+          "Events"
         ],
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/events/{id}": {
-      "get": {
+        "summary": "Get all Events",
         "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request"
-          }
-        }
-      },
-      "put": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request"
-          }
-        }
-      },
-      "delete": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request"
-          }
-        }
-      }
-    },
-    "/tickets/": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/tickets/{id}": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request"
-          }
-        }
-      }
-    },
-    "/tickets/{id}/validate": {
-      "patch": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request"
-          }
-        }
-      }
-    },
-    "/orders/": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "List of events",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Events"
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           }
         }
       },
       "post": {
-        "description": "",
+        "tags": [
+          "Events"
+        ],
+        "summary": "Create events (Admins and Organizers only)",
+        "description": "Creates a new events.",
         "parameters": [
           {
             "name": "authorization",
@@ -352,14 +326,54 @@
           {
             "name": "body",
             "in": "body",
+            "description": "Events information",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
-                "eventId": {
-                  "example": "any"
+                "title": {
+                  "type": "string",
+                  "example": "Tech Conference 2026"
                 },
-                "quantity": {
-                  "example": "any"
+                "description": {
+                  "type": "string",
+                  "example": "Annual technology conference"
+                },
+                "categoryId": {
+                  "type": "string",
+                  "example": "684b2d6a1234567890123456"
+                },
+                "venueId": {
+                  "type": "string",
+                  "example": "684b2d6a1234567890123457"
+                },
+                "eventsDate": {
+                  "type": "string",
+                  "example": "2026-12-15"
+                },
+                "startTime": {
+                  "type": "string",
+                  "example": "09:00"
+                },
+                "endTime": {
+                  "type": "string",
+                  "example": "17:00"
+                },
+                "ticketPrice": {
+                  "type": "number",
+                  "example": 50
+                },
+                "totalTickets": {
+                  "type": "number",
+                  "example": 500
+                },
+                "imageUrl": {
+                  "type": "string",
+                  "example": "https://example.com/events.jpg"
+                },
+                "status": {
+                  "type": "string",
+                  "example": "Published"
                 }
               }
             }
@@ -367,20 +381,188 @@
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Events created successfully"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       }
     },
-    "/orders/{id}": {
+    "/events/{id}": {
       "get": {
+        "tags": [
+          "Events"
+        ],
+        "summary": "Get event by ID",
         "description": "",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
+            "type": "string",
+            "description": "Event ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Event"
+            },
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Event not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Events"
+        ],
+        "summary": "Update events (Admins and Organizers only)",
+        "description": "Updates an existing events.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Events ID"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Updated events information",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Tech Conference 2026"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Updated conference description"
+                },
+                "ticketPrice": {
+                  "type": "number",
+                  "example": 75
+                },
+                "totalTickets": {
+                  "type": "number",
+                  "example": 750
+                },
+                "status": {
+                  "type": "string",
+                  "example": "Published"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Events updated successfully"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Events"
+        ],
+        "summary": "Delete events (Admins and Organizers only)",
+        "description": "Deletes an existing events.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Events ID"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/tickets/": {
+      "get": {
+        "tags": [
+          "Tickets"
+        ],
+        "summary": "Get all Tickets",
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of tickets",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Ticket"
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tickets/{id}": {
+      "get": {
+        "tags": [
+          "Tickets"
+        ],
+        "summary": "Get Ticket by ID (Admins and Organizers only)",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Ticket ID"
           },
           {
             "name": "authorization",
@@ -390,7 +572,165 @@
         ],
         "responses": {
           "200": {
+            "schema": {
+              "$ref": "#/definitions/Order"
+            },
             "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Order not found"
+          }
+        }
+      }
+    },
+    "/tickets/{id}/validate": {
+      "patch": {
+        "tags": [
+          "Tickets"
+        ],
+        "summary": "Validate ticket (Admins and Organizers only)",
+        "description": "QR scan / check-in: Marks a ticket as used after entry validation.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Ticket ID"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ticket validated successfully"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/orders/": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Get all Orders",
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of orders",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Order"
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Purchase tickets",
+        "description": "Creates an order and generates event tickets.",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Order information",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "eventId": {
+                  "type": "string",
+                  "example": "684b2d6a1234567890123456"
+                },
+                "quantity": {
+                  "type": "number",
+                  "example": 2
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Order created successfully"
+          },
+          "400": {
+            "description": "Insufficient tickets available"
+          },
+          "404": {
+            "description": "Event not found"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/orders/{id}": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Get Order by ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Order ID"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          },
+          "404": {
+            "description": "Order not found"
           }
         }
       }
@@ -412,18 +752,57 @@
         "tags": [
           "Venues"
         ],
-        "summary": "Create venue (Admins or Organizers only)",
-        "description": "",
+        "summary": "Create Venue (Admins and Organizers only)",
+        "description": "Creates a new venue.",
         "parameters": [
           {
             "name": "authorization",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Venue information",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Grand Hall"
+                },
+                "address": {
+                  "type": "string",
+                  "example": "123 Main Street"
+                },
+                "city": {
+                  "type": "string",
+                  "example": "Kinshasa"
+                },
+                "capacity": {
+                  "type": "number",
+                  "example": 1000
+                },
+                "contactPhone": {
+                  "type": "string",
+                  "example": "+243812345678"
+                },
+                "imageUrl": {
+                  "type": "string",
+                  "example": "https://example.com/venue.jpg"
+                },
+                "ownerId": {
+                  "type": "string",
+                  "example": "684b2d6a1234567890123456"
+                }
+              }
+            }
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "201": {
+            "description": "Venue created successfully"
           }
         },
         "security": [
@@ -458,22 +837,57 @@
         "tags": [
           "Venues"
         ],
-        "summary": "Update venue (Admins or Organizers only)",
-        "description": "",
+        "summary": "Update venue (Admins and Organizers only)",
+        "description": "Updates venue information.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "Venue ID"
           },
           {
             "name": "authorization",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Updated venue information",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Grand Hall Renovated"
+                },
+                "address": {
+                  "type": "string",
+                  "example": "456 Updated Avenue"
+                },
+                "city": {
+                  "type": "string",
+                  "example": "Kinshasa"
+                },
+                "capacity": {
+                  "type": "number",
+                  "example": 1200
+                },
+                "contactPhone": {
+                  "type": "string",
+                  "example": "+243812345678"
+                }
+              }
+            }
           }
         ],
         "responses": {
+          "200": {
+            "description": "Venue updated successfully!"
+          },
           "400": {
             "description": "Bad Request"
           }
@@ -495,7 +909,8 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "Venue ID"
           },
           {
             "name": "authorization",
@@ -613,34 +1028,71 @@
         }
       },
       "put": {
-        "description": "",
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Update category",
+        "description": "Updates an existing category.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "Category ID"
           },
           {
             "name": "authorization",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Updated category information",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Business"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Business and entrepreneurship events"
+                }
+              }
+            }
           }
         ],
         "responses": {
+          "200": {
+            "description": "Category updated successfully"
+          },
           "400": {
             "description": "Bad Request"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       },
       "delete": {
-        "description": "",
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Delete category (Admins only)",
+        "description": "Deletes an existing category.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "Category ID"
           },
           {
             "name": "authorization",
@@ -649,10 +1101,18 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "Category deleted successfully!"
+          },
           "400": {
             "description": "Bad Request"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       }
     },
     "/dashboard/stats": {

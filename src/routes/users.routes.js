@@ -46,14 +46,34 @@ router.get(
 // Update user (IMPORTANT: should be restricted properly)
 router.put(
   "/:id",
-
-  /**
+  /* 
     #swagger.tags = ['Users']
-    #swagger.summary = 'Update user (Must be authenticated)'
+    #swagger.summary = 'Update user profile'
+    #swagger.description = 'Updates user information. Email, Google ID and role cannot be modified.'
     #swagger.security = [{
       "BearerAuth": []
     }]
-   */
+    #swagger.parameters['id'] = {
+      in: 'path',
+      description: 'User ID',
+      required: true,
+      type: 'string'
+    }
+    #swagger.parameters['body'] = {
+      in: 'body',
+      description: 'User profile information',
+      required: true,
+      schema: {
+        firstName: 'Baron',
+        lastName: 'Mboka',
+        phoneNumber: '+243812345678',
+        profileImage: 'https://example.com/avatar.jpg'
+      }
+    }
+    #swagger.responses[200] = {
+      description: 'User updated successfully'
+    }
+  */
   authenticate,
   validateObjectId,
   asyncHandler(controller.updateUser),
@@ -68,6 +88,9 @@ router.delete(
     #swagger.security = [{
       "BearerAuth": []
     }]
+    #swagger.responses[200] = {
+      description: 'User deleted successfully!'
+    }
   */
   authenticate,
   authorize("admin"),

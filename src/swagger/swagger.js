@@ -20,7 +20,7 @@ const doc = {
       type: "apiKey",
       in: "header",
       name: "Authorization",
-      description: "Enter JWT token as: 'Bearer + <token>'",
+      description: "Enter JWT token as: 'Bearer' + JW Token ",
     },
   },
 

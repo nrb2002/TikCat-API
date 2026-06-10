@@ -33,12 +33,30 @@ router.get(
 // Create venue (admin + organizer)
 router.post(
   "/",
-  /*
+  /* 
     #swagger.tags = ['Venues']
-    #swagger.summary = 'Create venue (Admins or Organizers only)'
+    #swagger.summary = 'Create Venue (Admins and Organizers only)'
+    #swagger.description = 'Creates a new venue.'
     #swagger.security = [{
       "BearerAuth": []
     }]
+    #swagger.parameters['body'] = {
+      in: 'body',
+      description: 'Venue information',
+      required: true,
+      schema: {
+        name: 'Grand Hall',
+        address: '123 Main Street',
+        city: 'Kinshasa',
+        capacity: 1000,
+        contactPhone: '+243812345678',
+        imageUrl: 'https://example.com/venue.jpg',
+        ownerId: '684b2d6a1234567890123456'
+      }
+    }
+    #swagger.responses[201] = {
+      description: 'Venue created successfully'
+    }
   */
   authenticate,
   authorize("admin", "organizer"),
@@ -48,14 +66,35 @@ router.post(
 // Update venue
 router.put(
   "/:id",
-  /*
-    #swagger.tags = ['Venues']
-    #swagger.summary = 'Update venue (Admins or Organizers only)'
-    #swagger.security = [{
-      "BearerAuth": []
-    }]
-  
-  */
+  /* 
+  #swagger.tags = ['Venues']
+  #swagger.summary = 'Update venue (Admins and Organizers only)'
+  #swagger.description = 'Updates venue information.'
+  #swagger.security = [{
+    "BearerAuth": []
+  }]
+  #swagger.parameters['id'] = {
+    in: 'path',
+    description: 'Venue ID',
+    required: true,
+    type: 'string'
+  }
+  #swagger.parameters['body'] = {
+    in: 'body',
+    description: 'Updated venue information',
+    required: true,
+    schema: {
+      name: 'Grand Hall Renovated',
+      address: '456 Updated Avenue',
+      city: 'Kinshasa',
+      capacity: 1200,
+      contactPhone: '+243812345678'
+    }
+  }
+  #swagger.responses[200] = {
+    description: 'Venue updated successfully!'
+  }
+*/
   authenticate,
   authorize("admin", "organizer"),
   validateObjectId,
@@ -71,6 +110,12 @@ router.delete(
     #swagger.security = [{
       "BearerAuth": []
     }]
+    #swagger.parameters['id'] = {
+      in: 'path',
+      description: 'Venue ID',
+      required: true,
+      type: 'string'
+    }
   */
   authenticate,
   authorize("admin"),

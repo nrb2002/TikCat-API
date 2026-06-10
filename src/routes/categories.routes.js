@@ -9,6 +9,7 @@ const asyncHandler = require("../utils/asyncHandler");
 
 const router = express.Router();
 
+//Pull all categories
 router.get(
   "/",
   /* 
@@ -22,6 +23,7 @@ router.get(
   asyncHandler(controller.getAllCategories),
 );
 
+//Get a single ecategory
 router.get(
   "/:id",
   /* 
@@ -44,6 +46,7 @@ router.get(
   asyncHandler(controller.getCategoryById),
 );
 
+//Create new category
 router.post(
   "/",
   /* 
@@ -70,6 +73,7 @@ router.post(
   asyncHandler(controller.createCategory),
 );
 
+//Update an existing category
 router.put(
   "/:id",
 
@@ -106,8 +110,26 @@ router.put(
   asyncHandler(controller.updateCategory),
 );
 
+//Delete a cateogry
 router.delete(
   "/:id",
+  /**
+    #swagger.tags = ['Categories']
+    #swagger.summary = 'Delete category (Admins only)'
+    #swagger.description = 'Deletes an existing category.'
+    #swagger.security = [{
+      "BearerAuth": []
+    }]
+    #swagger.parameters['id'] = {
+      in: 'path',
+      description: 'Category ID',
+      required: true,
+      type: 'string'
+    }
+    #swagger.responses[200] = {
+      description: 'Category deleted successfully!'
+    }
+  */
   authenticate,
   authorize("admin"),
   validateObjectId,
