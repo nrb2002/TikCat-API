@@ -1,3 +1,5 @@
+//main.js
+
 const statusText = document.getElementById("api-status");
 const statusDot = document.querySelector(".status-dot");
 

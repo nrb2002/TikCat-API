@@ -4,9 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FountTech API</title>
+    <title>TikCat API</title>
 
-    <!-- Import CSS Files -->
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/medium.css">
     <link rel="stylesheet" href="/css/larger.css">
@@ -14,267 +13,395 @@
     <script src="/js/navBar.js" defer></script>
     <script src="/js/main.js" defer></script>
     <script src="/js/stats.js" defer></script>
-    
 </head>
 
 <body>
-    <nav class="navbar">
-    
-        <div class="nav-container">    
-            <a href="./" class="logo">
-                FountTech
-            </a>
-    
-            <button class="menu-toggle" aria-label="Open Menu">
-                ☰
-            </button>
-    
-            <ul class="nav-links">
-                <li><a href="#target-users">Target Users</a></li>
-                <li><a href="#how-it-works">How It Works</a></li>
-                <li><a href="#endpoints">Endpoints</a></li>
-                <li><a href="http://founttech-api.onrender.com/api-docs" target="_blank">Documentation</a></li>
-            </ul>
-    
-            <a href="/signin" class="sign-in-btn">
-                Sign In
-            </a>
-    
+
+    <!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikCat API</title>
+
+```
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/medium.css">
+<link rel="stylesheet" href="/css/larger.css">
+
+<script src="/js/navBar.js" defer></script>
+<script src="/js/main.js" defer></script>
+<script src="/js/stats.js" defer></script>
+```
+
+</head>
+
+<body>
+
+```
+<!-- NAVIGATION -->
+<nav class="navbar">
+    <div class="nav-container">
+
+        <a href="/" class="logo">
+            TikCat API
+        </a>
+
+        <button class="menu-toggle" aria-label="Open Menu">
+            ☰
+        </button>
+
+        <ul class="nav-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#users">Users</a></li>
+            <li><a href="#endpoints">Endpoints</a></li>
+            <li><a href="/api-docs" target="_blank">Documentation</a></li>
+        </ul>
+
+        <a href="/api-docs" target="_blank" class="sign-in-btn">
+            API Docs
+        </a>
+
+    </div>
+</nav>
+
+<!-- HERO SECTION -->
+<header class="hero">
+
+    <div class="hero-content">
+
+        <div class="status-badge online">
+            <span class="status-dot"></span>
+            <span id="api-status">API Online</span>
         </div>
-    
-    </nav>
-    <header class="hero">
-        
 
-        <div class="hero-content">
-    
-            <div class="status-badge">
-                <span class="status-dot"></span>
-                <span id="api-status">Checking API...</span>
-            </div>
-    
-            <h1>FountTech API</h1>
-    
-            <p>
-                A modern RESTful API for discovering, managing, and exploring local startup information from the Democratic Republic of the Congo.
-            </p>
-    
-            <div class="hero-buttons">
-                <a href="http://founttech-api.onrender.com/api-docs" target="_blank" class="btn">Documentation</a>
+        <h1>Modern Event Ticketing API</h1>
 
-                <!-- For local development; replace URL in production -->
-                <a href="http://founttech-api.onrender.com/startups" target="_blank" class="btn btn-secondary">Explore API</a>
-            </div>
-
-            <section class="stats">
-            
-                <div class="stat">
-                    <h2 id="startup-count" class="counter" data-target="250">0</h2>
-                    <p>Startups</p>
-                </div>
-            
-                <div class="stat">
-                    <h2 id="industry-count" class="counter" data-target="35">0</h2>
-                    <p>Industries</p>
-                </div>
-            
-                <div class="stat">
-                    <h2 id="city-count" class="counter" data-target="12">0</h2>
-                    <p>Cities</p>
-                </div>
-            
-            </section>
-    
-        </div>
-    </header>
-    <hr>
-
-    <main class="page-background">
-        <!-- About Section -->
-        <section class="about">
-            <div class="container">
-                <h2>About</h2>
-                <p>
-                    FountTech API provides structured startup information through a
-                    modern RESTful interface. Access startup profiles, founders,
-                    industries, funding stages, products, services, and business data from the Democratic Republic of the Congo.
-                </p>
-            </div>
-        </section>
-        <hr>
-
-        <!-- Target Users Section -->
-        <section id="target-users" class="target-users">
-            <div class="container">
-        
-                <h2>Who Is This API For?</h2>
-        
-                <p class="section-intro">
-                    FountTech API is designed for developers, entrepreneurs,
-                    researchers, incubators, accelerators, investors, and organizations
-                    seeking structured startup ecosystem data.
-                </p>
-        
-                <div class="cards">        
-                    <article class="glass-card">
-                        <h3>Developers</h3>
-                        <p>
-                            Integrate startup data into websites, mobile applications,
-                            dashboards, and business intelligence platforms.
-                        </p>
-                    </article>
-        
-                    <article class="glass-card">
-                        <h3>Investors</h3>
-                        <p>
-                            Discover startups by industry, location, growth stage,
-                            and funding profile.
-                        </p>
-                    </article>
-        
-                    <article class="glass-card">
-                        <h3>Incubators & Accelerators</h3>
-                        <p>
-                            Track startup portfolios, monitor ecosystem growth,
-                            and identify emerging ventures.
-                        </p>
-                    </article>
-        
-                    <article class="glass-card">
-                        <h3>Researchers</h3>
-                        <p>
-                            Analyze startup trends, industries, employment,
-                            and business performance data.
-                        </p>
-                    </article>
-        
-                </div>
-        
-            </div>
-        </section>
-        <hr>
-
-        <!-- How It Works Section -->
-        <section id="how-it-works" class="how-it-works">
-            <div class="container">
-        
-                <h2>How to Use the API</h2>
-        
-                <div class="steps">
-        
-                    <div class="step">
-                        <span class="step-number">1</span>
-                        <h3>Read the Documentation</h3>
-                        <p>
-                            Visit the <a href="http://founttech-api.onrender.com/api-docs" target="_blank">Swagger documentation</a> to explore available
-                            endpoints and request formats.
-                        </p>
-                    </div>
-        
-                    <div class="step">
-                        <span class="step-number">2</span>
-                        <h3>Connect Your Application</h3>
-                        <p>
-                            Send HTTP requests using your preferred frontend,
-                            backend, mobile app, or automation tool.
-                        </p>
-                    </div>
-        
-                    <div class="step">
-                        <span class="step-number">3</span>
-                        <h3>Retrieve Startup Data</h3>
-                        <p>
-                            Access startup profiles, locations, industries,
-                            products, services, and funding information.
-                        </p>
-                    </div>
-        
-                    <div class="step">
-                        <span class="step-number">4</span>
-                        <h3>Manage Records</h3>
-                        <p>
-                            Create, update, and delete startup records through
-                            secure RESTful endpoints.
-                        </p>
-                    </div>
-        
-                </div>
-        
-            </div>
-        </section>
-        <hr>
-        
-        <!-- Features Section -->
-        <section class="features">
-            <div class="container">
-                <h2>Core Features</h2>
-
-                <div class="cards">
-
-                    <article class="glass-card">
-                        <h3>CRUD Operations</h3>
-                        <p>Create, read, update, and delete startup records.</p>
-                    </article>
-
-                    <article class="glass-card">
-                        <h3>MongoDB</h3>
-                        <p>Reliable cloud database storage.</p>
-                    </article>
-
-                    <article class="glass-card">
-                        <h3>Validation</h3>
-                        <p>Robust request validation and error handling.</p>
-                    </article>
-
-                    <article class="glass-card">
-                        <h3>Swagger Docs</h3>
-                        <p>Interactive API documentation.</p>
-                    </article>
-
-                </div>
-            </div>
-        </section>
-        <hr>
-
-        <section id="endpoints" class="endpoints">
-            <div class="container">
-                <h2>Available Endpoints</h2>
-
-                <div class="endpoint">GET /startups</div>
-                <div class="endpoint">GET /startups/:id</div>
-                <div class="endpoint">POST /startups</div>
-                <div class="endpoint">PUT /startups/:id</div>
-                <div class="endpoint">DELETE /startups/:id</div>
-
-            </div>
-        </section>
-        <hr>
-
-        <section class="tech-stack">
-            <div class="container">
-                <h2>Technology Stack</h2>
-
-                <ul>
-                    <li>Node.js</li>
-                    <li>Express.js</li>
-                    <li>MongoDB</li>
-                    <li>Mongoose</li>
-                    <li>Swagger</li>
-                    <li>Render</li>
-                </ul>
-            </div>
-        </section>
-
-    </main>
-
-    <footer>
-        <p>FountTech API v1.0.0 | Built by Baron T.</p>
-        <br>
         <p>
-            &copy;<span id="current-year"></span>
-            FountTech API
+            Manage events, venues, attendees, ticket sales,
+            orders, authentication, and QR-code validation
+            through a powerful RESTful API.
         </p>
-    </footer>
+
+        <div class="hero-buttons">
+            <a href="/api-docs" target="_blank" class="btn">
+                Documentation
+            </a>
+
+            <a href="/events" target="_blank" class="btn btn-secondary">
+                Browse Events
+            </a>
+        </div>
+
+        <!-- Statistics -->
+        <div class="stats">
+
+            <div class="stat-card">
+                <span id="event-count" class="counter">150</span>
+                <p>Events</p>
+            </div>
+
+            <div class="stat-card">
+                <span id="venue-count" class="counter">40</span>
+                <p>Venues</p>
+            </div>
+
+            <div class="stat-card">
+                <span id="ticket-count" class="counter">5000</span>
+                <p>Tickets Sold</p>
+            </div>
+
+            <div class="stat-card">
+                <span id="user-count" class="counter">1200</span>
+                <p>Users</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+<main>
+
+    <!-- ABOUT -->
+    <section class="about-section">
+
+        <div class="container">
+
+            <h2>About TikCat API</h2>
+
+            <p class="section-intro">
+                TikCat API provides a complete event-ticketing backend
+                solution for developers and organizations. Create events,
+                manage venues, sell tickets, process orders, authenticate
+                users, and validate tickets using QR codes.
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features" class="features">
+
+        <div class="container">
+
+            <h2>Core Features</h2>
+
+            <div class="cards">
+
+                <article class="glass-card">
+                    <h3>Event Management</h3>
+                    <p>Create and manage public or private events.</p>
+                </article>
+
+                <article class="glass-card">
+                    <h3>Venue Management</h3>
+                    <p>Manage event locations and capacities.</p>
+                </article>
+
+                <article class="glass-card">
+                    <h3>Ticket Generation</h3>
+                    <p>Automatically generate unique tickets.</p>
+                </article>
+
+                <article class="glass-card">
+                    <h3>QR Code Validation</h3>
+                    <p>Validate tickets securely at entry points.</p>
+                </article>
+
+                <article class="glass-card">
+                    <h3>Order Processing</h3>
+                    <p>Handle purchases and ticket reservations.</p>
+                </article>
+
+                <article class="glass-card">
+                    <h3>OAuth Authentication</h3>
+                    <p>Google and GitHub login integration.</p>
+                </article>
+
+                <article class="glass-card">
+                    <h3>Dashboard Analytics</h3>
+                    <p>Track revenue, orders, events and users.</p>
+                </article>
+
+                <article class="glass-card">
+                    <h3>Swagger Documentation</h3>
+                    <p>Interactive API testing and exploration.</p>
+                </article>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- USERS -->
+    <section id="users" class="target-users">
+
+        <div class="container">
+
+            <h2>Who Uses TikCat API?</h2>
+
+            <div class="cards">
+
+                <article class="glass-card">
+                    <h3>Event Organizers</h3>
+                    <p>
+                        Create, manage and monitor events.
+                    </p>
+                </article>
+
+                <article class="glass-card">
+                    <h3>Venue Managers</h3>
+                    <p>
+                        Manage event venues and capacities.
+                    </p>
+                </article>
+
+                <article class="glass-card">
+                    <h3>Developers</h3>
+                    <p>
+                        Integrate ticketing into websites and apps.
+                    </p>
+                </article>
+
+                <article class="glass-card">
+                    <h3>Attendees</h3>
+                    <p>
+                        Purchase and validate event tickets.
+                    </p>
+                </article>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="how-it-works">
+
+        <div class="container">
+
+            <h2>How It Works</h2>
+
+            <div class="steps">
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <h3>Authenticate</h3>
+                    <p>Sign in using Google or GitHub OAuth.</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <h3>Create Events</h3>
+                    <p>Organizers create events and venues.</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <h3>Sell Tickets</h3>
+                    <p>Users purchase tickets through orders.</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <h3>Validate Entry</h3>
+                    <p>QR codes are scanned at event entry.</p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ENDPOINTS -->
+    <section id="endpoints" class="endpoints">
+
+        <div class="container">
+
+            <h2>Popular Endpoints</h2>
+
+            <div class="endpoint-grid">
+
+                <div class="endpoint">GET /events</div>
+
+                <div class="endpoint">GET /venues</div>
+
+                <div class="endpoint">GET /categories</div>
+
+                <div class="endpoint">POST /orders</div>
+
+                <div class="endpoint">GET /tickets</div>
+
+                <div class="endpoint">PATCH /tickets/:id/validate</div>
+
+                <div class="endpoint">GET /dashboard/stats</div>
+
+                <div class="endpoint">GET /auth/google</div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- API MODULES -->
+    <section class="tech-stack">
+
+        <div class="container">
+
+            <h2>Available Resources</h2>
+
+            <div class="cards">
+
+                <article class="glass-card">Authentication</article>
+
+                <article class="glass-card">Users</article>
+
+                <article class="glass-card">Events</article>
+
+                <article class="glass-card">Categories</article>
+
+                <article class="glass-card">Venues</article>
+
+                <article class="glass-card">Orders</article>
+
+                <article class="glass-card">Tickets</article>
+
+                <article class="glass-card">Dashboard</article>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- TECH STACK -->
+    <section class="tech-stack">
+
+        <div class="container">
+
+            <h2>Technology Stack</h2>
+
+            <div class="cards">
+
+                <article class="glass-card">Node.js</article>
+
+                <article class="glass-card">Express.js</article>
+
+                <article class="glass-card">MongoDB Atlas</article>
+
+                <article class="glass-card">Mongoose</article>
+
+                <article class="glass-card">Passport.js</article>
+
+                <article class="glass-card">JWT</article>
+
+                <article class="glass-card">Swagger</article>
+
+                <article class="glass-card">Render</article>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+
+    <p>
+        TikCat API v1.0.0
+    </p>
+
+    <p>
+        Event Ticketing Platform API
+    </p>
+
+    <br>
+
+    <p>
+        © <span id="current-year"></span>
+        TikCat API
+    </p>
+
+</footer>
+```
 
 </body>
+
+</html>
+
+
+</body>
+
 </html>
