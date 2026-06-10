@@ -2,7 +2,7 @@ const authService = require("../services/auth.service");
 const generateToken = require("../utils/generateToken");
 
 const googleCallback = async (req, res) => {
-  const token = authService.generateToken(req.user);
+  const token = generateToken(req.user);
 
   res.status(200).json({
     success: true,

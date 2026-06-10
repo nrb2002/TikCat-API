@@ -9,12 +9,62 @@ const asyncHandler = require("../utils/asyncHandler");
 
 const router = express.Router();
 
-router.get("/", asyncHandler(controller.getAllCategories));
+router.get(
+  "/",
+  /* 
+    #swagger.tags = ['Categories']
+    #swagger.summary = 'Get all categories'
+    #swagger.responses[200] = {
+      description: 'List of categories',
+      schema: [{ $ref: '#/definitions/Category' }]
+    }
+  */
+  asyncHandler(controller.getAllCategories),
+);
 
-router.get("/:id", validateObjectId, asyncHandler(controller.getCategoryById));
+router.get(
+  "/:id",
+  /* 
+    #swagger.tags = ['Categories']
+    #swagger.summary = 'Get category by ID'
+    #swagger.parameters['id'] = {
+      in: 'path',
+      description: 'Category ID',
+      required: true,
+      type: 'string'
+    }
+    #swagger.responses[200] = {
+      schema: { $ref: '#/definitions/Category' }
+    }
+    #swagger.responses[404] = {
+      description: 'Category not found'
+    }
+  */
+  validateObjectId,
+  asyncHandler(controller.getCategoryById),
+);
 
 router.post(
   "/",
+  /* 
+    #swagger.tags = ['Categories']
+    #swagger.summary = 'Create a category'
+    #swagger.security = [{
+      "BearerAuth": []
+    }]
+    #swagger.parameters['body'] = {
+      in: 'body',
+      description: 'Category information',
+      required: true,
+      schema: {
+        name: 'Technology',
+        description: 'Technology related events'
+      }
+    }
+    #swagger.responses[201] = {
+      description: 'Category created successfully'
+    }
+  */
   authenticate,
   authorize("admin"),
   asyncHandler(controller.createCategory),
@@ -22,6 +72,34 @@ router.post(
 
 router.put(
   "/:id",
+
+  /* 
+    #swagger.tags = ['Categories']
+    #swagger.summary = 'Update category'
+    #swagger.description = 'Updates an existing category.'
+    #swagger.security = [{
+      "BearerAuth": []
+    }]
+    #swagger.parameters['id'] = {
+      in: 'path',
+      description: 'Category ID',
+      required: true,
+      type: 'string'
+    }
+    #swagger.parameters['body'] = {
+      in: 'body',
+      description: 'Updated category information',
+      required: true,
+      schema: {
+        name: 'Business',
+        description: 'Business and entrepreneurship events'
+      }
+    }
+    #swagger.responses[200] = {
+      description: 'Category updated successfully'
+    }
+  */
+
   authenticate,
   authorize("admin"),
   validateObjectId,
