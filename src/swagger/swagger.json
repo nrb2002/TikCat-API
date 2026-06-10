@@ -32,7 +32,7 @@
     "/auth/google": {
       "get": {
         "tags": [
-          "Authentication"
+          "Google Authentication (For browser use only)"
         ],
         "summary": "Redirect to Google OAuth",
         "description": "Initiates Google OAuth2 login flow. Redirects user to Google consent screen.",
@@ -46,7 +46,7 @@
     "/auth/google/callback": {
       "get": {
         "tags": [
-          "Authentication"
+          "Google Authentication (For browser use only)"
         ],
         "summary": "Google OAuth callback",
         "description": "Handles Google OAuth callback and returns authenticated user data + token.",
@@ -101,7 +101,7 @@
     "/auth/logout": {
       "post": {
         "tags": [
-          "Authentication"
+          "Google Authentication (For browser use only)"
         ],
         "summary": "Logout user",
         "description": "Logs out the authenticated user (JWT or session-based).",
