@@ -1,58 +1,115 @@
-// controllers/auth.controller.js
-
 const authService = require("../services/auth.service");
 
 /**
- * Register user
+ * =========================
+ * REGISTER
+ * =========================
  */
 const register = async (req, res) => {
-  const result = await authService.register(req.body);
+  const user = await authService.register(req.body);
 
-  res.status(201).json(result);
-};
+  const response = authService.buildAuthResponse(user);
 
-/**
- * Login user
- */
-const login = async (req, res) => {
-  const result = await authService.login(req.body.email, req.body.password);
-
-  res.status(200).json(result);
-};
-
-/**
- * Google OAuth callback
- */
-const googleCallback = async (req, res) => {
-  const result = await authService.loginUser(req.user);
-
-  res.status(200).json(result);
-};
-
-/**
- * Current authenticated user
- */
-const getCurrentUser = async (req, res) => {
-  res.status(200).json({
+  res.status(201).json({
     success: true,
-    user: {
-      id: req.user._id,
-      email: req.user.email,
-      firstName: req.user.firstName,
-      lastName: req.user.lastName,
-      role: req.user.role,
-      profileImage: req.user.profileImage,
-    },
+    message: "Registration successful",
+    ...response,
   });
 };
 
 /**
- * Logout
+ * =========================
+ * LOGIN
+ * =========================
  */
-const logout = async (req, res) => {
+const login = async (req, res) => {
+  const user = await authService.login(req.body.email, req.body.password);
+
+  const response = authService.buildAuthResponse(user);
+
   res.status(200).json({
     success: true,
-    message: "Logged out successfully!",
+    message: "Login successful",
+    ...response,
+  });
+};
+
+/**
+ * =========================
+ * GOOGLE CALLBACK
+ * =========================
+ */
+const googleCallback = async (req, res) => {
+  const user = await authService.findOrCreateGoogleUser(req.user);
+
+  const response = authService.buildAuthResponse(user);
+
+  res.status(200).json({
+    success: true,
+    message: "Google authentication successful",
+    ...response,
+  });
+};
+
+/**
+ * =========================
+ * GET PROFILE
+ * =========================
+ */
+const getUserProfile = async (req, res) => {
+  const user = await authService.getProfile(req.user._id);
+
+  res.status(200).json({
+    success: true,
+    user,
+  });
+};
+
+/**
+ * =========================
+ * UPDATE PROFILE
+ * =========================
+ */
+const updateProfile = async (req, res) => {
+  const user = await authService.updateProfile(req.user._id, req.body);
+
+  res.status(200).json({
+    success: true,
+    message: "Profile updated successfully",
+    user,
+  });
+};
+
+/**
+ * =========================s
+ * CHANGE PASSWORD
+ * =========================
+ */
+const changePassword = async (req, res) => {
+  await authService.changePassword(
+    req.user._id,
+    req.body.currentPassword,
+    req.body.newPassword,
+    req.body.confirmPassword,
+  );
+
+  res.status(200).json({
+    success: true,
+    message: "Password updated successfully!",
+  });
+};
+
+/**
+ * =========================
+ * LOGOUT
+ * =========================
+ */
+const logout = async (req, res) => {
+  const result = await authService.logout();
+
+  res.status(200).json({
+    success: true,
+    ...result,
   });
 };
 
@@ -60,6 +117,8 @@ module.exports = {
   register,
   login,
   googleCallback,
-  getCurrentUser,
+  getUserProfile,
+  updateProfile,
+  changePassword,
   logout,
 };

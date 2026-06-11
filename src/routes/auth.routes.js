@@ -8,50 +8,42 @@ const authenticate = require("../middleware/authenticate");
 const router = express.Router();
 
 /********************************************
- * GOOGLE SIGNUP/LOGIN ROUTES
- * /************************************** */
+ * GOOGLE SIGNUP / LOGIN ROUTES
+ ********************************************/
 
-// Google OAuth redirect
 router.get(
   "/google",
+
   /*
-    #swagger.tags = ['Google Auth (Frontend users only.)']
-    #swagger.summary = 'Redirect to Google OAuth'
-    #swagger.description = 'Initiates Google OAuth2 login flow. Redirects user to Google consent screen.'
+    #swagger.tags = ['Google OAuth']
+    #swagger.summary = 'Login with Google'
+    #swagger.description = 'Redirects the user to Google OAuth authentication.'
   */
+
   passport.authenticate("google", {
     scope: ["profile", "email"],
   }),
 );
 
-// Google callback URL
 router.get(
   "/google/callback",
+
   /*
-    #swagger.tags = ['Google Auth (Frontend users only.)']
+    #swagger.tags = ['Google OAuth']
     #swagger.summary = 'Google OAuth callback'
-    #swagger.description = 'Handles Google OAuth callback and returns authenticated user data + token.'
+    #swagger.description = 'Handles Google authentication and returns a JWT token.'
 
     #swagger.responses[200] = {
       description: 'Authentication successful',
-      content: {
-        "application/json": {
-          schema: {
-            type: "object",
-            properties: {
-              success: { type: "boolean", example: true },
-              message: { type: "string", example: "Login successful" },
-              token: { type: "string", example: "jwt_token_here" },
-              user: {
-                type: "object",
-                properties: {
-                  id: { type: "string", example: "64f1c2..." },
-                  email: { type: "string", example: "user@gmail.com" },
-                  name: { type: "string", example: "John Doe" }
-                }
-              }
-            }
-          }
+      schema: {
+        success: true,
+        message: 'Login successful',
+        token: 'jwt_token_here',
+        user: {
+          id: '6845a123abc456',
+          email: 'john@gmail.com',
+          name: 'John Doe',
+          role: 'attendee'
         }
       }
     }
@@ -60,6 +52,7 @@ router.get(
       description: 'Authentication failed'
     }
   */
+
   passport.authenticate("google", {
     session: false,
     failureRedirect: "/login",
@@ -68,16 +61,15 @@ router.get(
 );
 
 /********************************************
- * LOCAL SIGNUP/LOGIN ROUTES
- * /************************************** */
+ * LOCAL AUTH ROUTES
+ ********************************************/
 
-//Register user
 router.post(
   "/register",
 
   /*
     #swagger.tags = ['Authentication']
-    #swagger.summary = 'Register a new user'
+    #swagger.summary = 'Register user'
     #swagger.description = 'Creates a new user account and returns a JWT token.'
 
     #swagger.parameters['body'] = {
@@ -88,31 +80,44 @@ router.post(
         firstName: 'John',
         lastName: 'Doe',
         email: 'john@example.com',
-        password: 'Password123',
-        $ref: '#/definitions/RegisterRequest'
+        password: 'Password123'
       }
     }
 
     #swagger.responses[201] = {
-      description: 'User registered successfully'
+      description: 'User registered successfully',
+      schema: {
+        success: true,
+        message: 'Registration successful',
+        token: 'jwt_token_here',
+        user: {
+          id: '6845a123abc456',
+          email: 'john@example.com',
+          name: 'John Doe',
+          role: 'attendee'
+        }
+      }
     }
 
     #swagger.responses[409] = {
-      description: 'Email already exists'
+      description: 'Email already registered'
+    }
+
+    #swagger.responses[400] = {
+      description: 'Validation failed'
     }
   */
 
-  asyncHandler(authController.register)
+  asyncHandler(authController.register),
 );
 
-// Login user
 router.post(
   "/login",
 
   /*
     #swagger.tags = ['Authentication']
     #swagger.summary = 'Login user'
-    #swagger.description = 'Authenticates user and returns JWT token.'
+    #swagger.description = 'Authenticates user and returns a JWT token.'
 
     #swagger.parameters['body'] = {
       in: 'body',
@@ -120,14 +125,23 @@ router.post(
       description: 'User credentials',
       schema: {
         email: 'john@example.com',
-        password: 'Password123',
-        role: 'Attendee',
-        $ref: '#/definitions/LoginRequest'
+        password: 'Password123'
       }
     }
 
     #swagger.responses[200] = {
-      description: 'Login successful'
+      description: 'Login successful',
+      schema: {
+        success: true,
+        message: 'Login successful',
+        token: 'jwt_token_here',
+        user: {
+          id: '6845a123abc456',
+          email: 'john@example.com',
+          name: 'John Doe',
+          role: 'attendee'
+        }
+      }
     }
 
     #swagger.responses[401] = {
@@ -135,23 +149,38 @@ router.post(
     }
   */
 
-  asyncHandler(authController.login)
+  asyncHandler(authController.login),
 );
 
+/********************************************
+ * PROFILE ROUTES
+ ********************************************/
+
 router.get(
-  "/me",
+  "/profile",
 
   /*
-    #swagger.tags = ['Authentication']
-    #swagger.summary = 'Get current authenticated user'
-    #swagger.description = 'Returns the profile of the currently authenticated user.'
+    #swagger.tags = ['User Profile']
+    #swagger.summary = 'Get current user profile'
+    #swagger.description = 'Returns the currently authenticated user.'
 
     #swagger.security = [{
       "BearerAuth": []
     }]
 
     #swagger.responses[200] = {
-      description: 'Current user returned successfully'
+      description: 'User profile retrieved successfully',
+      schema: {
+        success: true,
+        user: {
+          id: '6845a123abc456',
+          firstName: 'John',
+          lastName: 'Doe',
+          email: 'john@example.com',
+          role: 'attendee',
+          profileImage: 'https://example.com/avatar.jpg'
+        }
+      }
     }
 
     #swagger.responses[401] = {
@@ -160,40 +189,136 @@ router.get(
   */
 
   authenticate,
-  asyncHandler(authController.getCurrentUser),
+  asyncHandler(authController.getUserProfile),
 );
 
-// Logout route
-router.post(
-  "/logout",
+/**************************************************
+ * UPDATE USER PROFILE
+ *************************************************/
+router.put(
+  "/profile",
+
   /*
-    #swagger.tags = ['Google Auth (Frontend users only)']
-    #swagger.summary = 'Logout user. '
-    #swagger.description = 'Logs out the authenticated user (JWT or session-based).'
+    #swagger.tags = ['User Profile']
+    #swagger.summary = 'Update profile'
+    #swagger.description = 'Updates profile information of the authenticated user.'
 
     #swagger.security = [{
-      "bearerAuth": []
+      "BearerAuth": []
+    }]
+
+    #swagger.parameters['body'] = {
+      in: 'body',
+      required: true,
+      description: 'Profile information',
+      schema: {
+        firstName: 'John',
+        lastName: 'Doe',
+        profileImage: 'https://example.com/avatar.jpg',
+        "email": "johndoe@example.com",
+        "phoneNumber": 0850000000,
+        "role": "attendee",
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'Profile updated successfully',
+      schema: {
+        success: true,
+        message: 'Profile updated successfully'
+      }
+    }
+
+    #swagger.responses[400] = {
+      description: 'Validation failed'
+    }
+
+    #swagger.responses[401] = {
+      description: 'Unauthorized'
+    }
+  */
+
+  authenticate,
+  asyncHandler(authController.updateProfile),
+);
+
+/**************************************************
+ * CHANGE PASSWORD
+ *************************************************/
+router.put(
+  "/change-password",
+
+  /*
+    #swagger.tags = ['User Profile']
+    #swagger.summary = 'Change user password'
+    #swagger.description = 'Allows authenticated user to change password.'
+
+    #swagger.security = [{
+      "BearerAuth": []
+    }]
+
+    #swagger.parameters['body'] = {
+      in: 'body',
+      required: true,
+      description: 'Password change payload',
+      schema: {
+        currentPassword: "OldPassword123",
+        newPassword: "NewPassword123",
+        confirmPassword: "NewPassword123"
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'Password updated successfully',
+      schema: {
+        success: true,
+        message: "Password updated successfully"
+      }
+    }
+
+    #swagger.responses[400] = {
+      description: 'Validation error (password mismatch or weak password)'
+    }
+
+    #swagger.responses[401] = {
+      description: 'Current password is incorrect'
+    }
+  }
+  */
+
+  authenticate,
+  asyncHandler(authController.changePassword),
+);
+
+/********************************************
+ * LOGOUT
+ ********************************************/
+
+router.post(
+  "/logout",
+
+  /*
+    #swagger.tags = ['Authentication']
+    #swagger.summary = 'Logout user'
+    #swagger.description = 'Logs out the authenticated user.'
+
+    #swagger.security = [{
+      "BearerAuth": []
     }]
 
     #swagger.responses[200] = {
       description: 'Logout successful',
-      content: {
-        "application/json": {
-          schema: {
-            type: "object",
-            properties: {
-              success: { type: "boolean", example: true },
-              message: { type: "string", example: "Logged out successfully" }
-            }
-          }
-        }
+      schema: {
+        success: true,
+        message: 'Logged out successfully'
       }
     }
 
     #swagger.responses[401] = {
-      description: 'Unauthorized - user not authenticated'
+      description: 'Unauthorized'
     }
   */
+
   authenticate,
   asyncHandler(authController.logout),
 );

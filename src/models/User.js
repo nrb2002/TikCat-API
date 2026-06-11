@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema(
 
     googleId: {
       type: String,
-      unique: true,
+      default: null,
     },
 
     role: {
@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema(
         values: ROLES,
         message: "Invalid user role",
       },
-      default: "attendee",
+      default: ROLES[2], // Default to "Attendee"
       index: true,
     },
 
@@ -65,10 +65,10 @@ userSchema.set("toJSON", {
       firstName: ret.firstName,
       lastName: ret.lastName,
       email: ret.email,
-      googleId: ret.googleId,
-      role: ret.role,
-      profileImage: ret.profileImage,
       phoneNumber: ret.phoneNumber,
+      profileImage: ret.profileImage,
+      role: ret.role,
+      googleId: ret.googleId,
       createdAt: ret.createdAt,
       updatedAt: ret.updatedAt,
     };

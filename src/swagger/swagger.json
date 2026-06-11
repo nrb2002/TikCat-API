@@ -32,10 +32,10 @@
     "/auth/google": {
       "get": {
         "tags": [
-          "Google Auth (Frontend users only.)"
+          "Google OAuth"
         ],
-        "summary": "Redirect to Google OAuth",
-        "description": "Initiates Google OAuth2 login flow. Redirects user to Google consent screen.",
+        "summary": "Login with Google",
+        "description": "Redirects the user to Google OAuth authentication.",
         "responses": {
           "default": {
             "description": ""
@@ -46,49 +46,52 @@
     "/auth/google/callback": {
       "get": {
         "tags": [
-          "Google Auth (Frontend users only.)"
+          "Google OAuth"
         ],
         "summary": "Google OAuth callback",
-        "description": "Handles Google OAuth callback and returns authenticated user data + token.",
+        "description": "Handles Google authentication and returns a JWT token.",
         "responses": {
           "200": {
             "description": "Authentication successful",
-            "content": {
-              "application/json": {
-                "schema": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Login successful"
+                },
+                "token": {
+                  "type": "string",
+                  "example": "jwt_token_here"
+                },
+                "user": {
                   "type": "object",
                   "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "message": {
+                    "id": {
                       "type": "string",
-                      "example": "Login successful"
+                      "example": "6845a123abc456"
                     },
-                    "token": {
+                    "email": {
                       "type": "string",
-                      "example": "jwt_token_here"
+                      "example": "john@gmail.com"
                     },
-                    "user": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string",
-                          "example": "64f1c2..."
-                        },
-                        "email": {
-                          "type": "string",
-                          "example": "user@gmail.com"
-                        },
-                        "name": {
-                          "type": "string",
-                          "example": "John Doe"
-                        }
-                      }
+                    "name": {
+                      "type": "string",
+                      "example": "John Doe"
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "attendee"
                     }
                   }
                 }
+              },
+              "xml": {
+                "name": "main"
               }
             }
           },
@@ -103,7 +106,7 @@
         "tags": [
           "Authentication"
         ],
-        "summary": "Register a new user",
+        "summary": "Register user",
         "description": "Creates a new user account and returns a JWT token.",
         "parameters": [
           {
@@ -112,20 +115,78 @@
             "required": true,
             "description": "User registration data",
             "schema": {
-              "firstName": "John",
-              "lastName": "Doe",
-              "email": "john@example.com",
-              "password": "Password123",
-              "$ref": "#/definitions/RegisterRequest"
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "type": "string",
+                  "example": "John"
+                },
+                "lastName": {
+                  "type": "string",
+                  "example": "Doe"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "john@example.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "Password123"
+                }
+              }
             }
           }
         ],
         "responses": {
           "201": {
-            "description": "User registered successfully"
+            "description": "User registered successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Registration successful"
+                },
+                "token": {
+                  "type": "string",
+                  "example": "jwt_token_here"
+                },
+                "user": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "6845a123abc456"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "john@example.com"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "John Doe"
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "attendee"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed"
           },
           "409": {
-            "description": "Email already exists"
+            "description": "Email already registered"
           }
         }
       }
@@ -136,7 +197,7 @@
           "Authentication"
         ],
         "summary": "Login user",
-        "description": "Authenticates user and returns JWT token.",
+        "description": "Authenticates user and returns a JWT token.",
         "parameters": [
           {
             "name": "body",
@@ -144,16 +205,64 @@
             "required": true,
             "description": "User credentials",
             "schema": {
-              "email": "john@example.com",
-              "password": "Password123",
-              "role": "Attendee",
-              "$ref": "#/definitions/LoginRequest"
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "john@example.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "Password123"
+                }
+              }
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Login successful"
+            "description": "Login successful",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Login successful"
+                },
+                "token": {
+                  "type": "string",
+                  "example": "jwt_token_here"
+                },
+                "user": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "6845a123abc456"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "john@example.com"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "John Doe"
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "attendee"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "401": {
             "description": "Invalid credentials"
@@ -161,13 +270,13 @@
         }
       }
     },
-    "/auth/me": {
+    "/auth/profile": {
       "get": {
         "tags": [
-          "Authentication"
+          "User Profile"
         ],
-        "summary": "Get current authenticated user",
-        "description": "Returns the profile of the currently authenticated user.",
+        "summary": "Get current user profile",
+        "description": "Returns the currently authenticated user.",
         "parameters": [
           {
             "name": "authorization",
@@ -177,7 +286,129 @@
         ],
         "responses": {
           "200": {
-            "description": "Current user returned successfully"
+            "description": "User profile retrieved successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "user": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "6845a123abc456"
+                    },
+                    "firstName": {
+                      "type": "string",
+                      "example": "John"
+                    },
+                    "lastName": {
+                      "type": "string",
+                      "example": "Doe"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "john@example.com"
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "attendee"
+                    },
+                    "profileImage": {
+                      "type": "string",
+                      "example": "https://example.com/avatar.jpg"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "User Profile"
+        ],
+        "summary": "Update profile",
+        "description": "Updates profile information of the authenticated user.",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Profile information",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "type": "string",
+                  "example": "John"
+                },
+                "lastName": {
+                  "type": "string",
+                  "example": "Doe"
+                },
+                "profileImage": {
+                  "type": "string",
+                  "example": "https://example.com/avatar.jpg"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "johndoe@example.com"
+                },
+                "phoneNumber": {
+                  "type": "number",
+                  "example": 850000000
+                },
+                "role": {
+                  "type": "string",
+                  "example": "attendee"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Profile updated successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Profile updated successfully"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed"
           },
           "401": {
             "description": "Unauthorized"
@@ -190,13 +421,84 @@
         ]
       }
     },
+    "/auth/change-password": {
+      "put": {
+        "tags": [
+          "User Profile"
+        ],
+        "summary": "Change user password",
+        "description": "Allows authenticated user to change password.",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Password change payload",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "currentPassword": {
+                  "type": "string",
+                  "example": "OldPassword123"
+                },
+                "newPassword": {
+                  "type": "string",
+                  "example": "NewPassword123"
+                },
+                "confirmPassword": {
+                  "type": "string",
+                  "example": "NewPassword123"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Password updated successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Password updated successfully"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error (password mismatch or weak password)"
+          },
+          "401": {
+            "description": "Current password is incorrect"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
     "/auth/logout": {
       "post": {
         "tags": [
-          "Google Auth (Frontend users only)"
+          "Authentication"
         ],
-        "summary": "Logout user. ",
-        "description": "Logs out the authenticated user (JWT or session-based).",
+        "summary": "Logout user",
+        "description": "Logs out the authenticated user.",
         "parameters": [
           {
             "name": "authorization",
@@ -207,31 +509,30 @@
         "responses": {
           "200": {
             "description": "Logout successful",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Logged out successfully"
-                    }
-                  }
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Logged out successfully"
                 }
+              },
+              "xml": {
+                "name": "main"
               }
             }
           },
           "401": {
-            "description": "Unauthorized - user not authenticated"
+            "description": "Unauthorized"
           }
         },
         "security": [
           {
-            "bearerAuth": []
+            "BearerAuth": []
           }
         ]
       }
@@ -1378,7 +1679,7 @@
         },
         "role": {
           "type": "string",
-          "example": "Attendee"
+          "example": "attendee"
         },
         "profileImage": {
           "type": "string",
