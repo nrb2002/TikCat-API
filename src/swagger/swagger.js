@@ -25,6 +25,18 @@ const doc = {
   },
 
   definitions: {
+    RegisterRequest: {
+      firstName: "John",
+      lastName: "Doe",
+      email: "john@example.com",
+      password: "Password123"
+    },
+
+    LoginRequest: {
+      email: "john@example.com",
+      password: "Password123"
+    },
+    
     User: {
       _id: "68459f7e1a2f123456789abc",
       firstName: "John",
