@@ -1,9 +1,11 @@
 const express = require("express");
 const passport = require("passport");
 
-const authController = require("../controllers/auth.controller");
+const controller = require("../controllers/auth.controller");
 const asyncHandler = require("../utils/asyncHandler");
 const authenticate = require("../middleware/authenticate");
+const validate = require("../middleware/validate");
+const userValidator = require("../validators/user.validator");
 
 const router = express.Router();
 
@@ -57,19 +59,19 @@ router.get(
     session: false,
     failureRedirect: "/login",
   }),
-  asyncHandler(authController.googleCallback),
+  asyncHandler(controller.googleCallback),
 );
 
 /********************************************
  * LOCAL AUTH ROUTES
  ********************************************/
-
+// Registration and login routes are public and do not require authentication
 router.post(
   "/register",
 
   /*
     #swagger.tags = ['Authentication']
-    #swagger.summary = 'Register user'
+    #swagger.summary = 'Register user (Public)'
     #swagger.description = 'Creates a new user account and returns a JWT token.'
 
     #swagger.parameters['body'] = {
@@ -107,16 +109,18 @@ router.post(
       description: 'Validation failed'
     }
   */
-
-  asyncHandler(authController.register),
+  userValidator.registerValidationRules(),
+  validate,
+  asyncHandler(controller.register),
 );
 
+// Login route is public and does not require authentication
 router.post(
   "/login",
 
   /*
     #swagger.tags = ['Authentication']
-    #swagger.summary = 'Login user'
+    #swagger.summary = 'Login user (Public)'
     #swagger.description = 'Authenticates user and returns a JWT token.'
 
     #swagger.parameters['body'] = {
@@ -148,146 +152,9 @@ router.post(
       description: 'Invalid credentials'
     }
   */
-
-  asyncHandler(authController.login),
-);
-
-/********************************************
- * PROFILE ROUTES
- ********************************************/
-
-router.get(
-  "/profile",
-
-  /*
-    #swagger.tags = ['User Profile']
-    #swagger.summary = 'Get current user profile'
-    #swagger.description = 'Returns the currently authenticated user.'
-
-    #swagger.security = [{
-      "BearerAuth": []
-    }]
-
-    #swagger.responses[200] = {
-      description: 'User profile retrieved successfully',
-      schema: {
-        success: true,
-        user: {
-          id: '6845a123abc456',
-          firstName: 'John',
-          lastName: 'Doe',
-          email: 'john@example.com',
-          role: 'attendee',
-          profileImage: 'https://example.com/avatar.jpg'
-        }
-      }
-    }
-
-    #swagger.responses[401] = {
-      description: 'Unauthorized'
-    }
-  */
-
-  authenticate,
-  asyncHandler(authController.getUserProfile),
-);
-
-/**************************************************
- * UPDATE USER PROFILE
- *************************************************/
-router.put(
-  "/profile",
-
-  /*
-    #swagger.tags = ['User Profile']
-    #swagger.summary = 'Update profile'
-    #swagger.description = 'Updates profile information of the authenticated user.'
-
-    #swagger.security = [{
-      "BearerAuth": []
-    }]
-
-    #swagger.parameters['body'] = {
-      in: 'body',
-      required: true,
-      description: 'Profile information',
-      schema: {
-        firstName: 'John',
-        lastName: 'Doe',
-        profileImage: 'https://example.com/avatar.jpg',
-        "email": "johndoe@example.com",
-        "phoneNumber": 0850000000,
-        "role": "attendee",
-      }
-    }
-
-    #swagger.responses[200] = {
-      description: 'Profile updated successfully',
-      schema: {
-        success: true,
-        message: 'Profile updated successfully'
-      }
-    }
-
-    #swagger.responses[400] = {
-      description: 'Validation failed'
-    }
-
-    #swagger.responses[401] = {
-      description: 'Unauthorized'
-    }
-  */
-
-  authenticate,
-  asyncHandler(authController.updateProfile),
-);
-
-/**************************************************
- * CHANGE PASSWORD
- *************************************************/
-router.put(
-  "/change-password",
-
-  /*
-    #swagger.tags = ['User Profile']
-    #swagger.summary = 'Change user password'
-    #swagger.description = 'Allows authenticated user to change password.'
-
-    #swagger.security = [{
-      "BearerAuth": []
-    }]
-
-    #swagger.parameters['body'] = {
-      in: 'body',
-      required: true,
-      description: 'Password change payload',
-      schema: {
-        currentPassword: "OldPassword123",
-        newPassword: "NewPassword123",
-        confirmPassword: "NewPassword123"
-      }
-    }
-
-    #swagger.responses[200] = {
-      description: 'Password updated successfully',
-      schema: {
-        success: true,
-        message: "Password updated successfully"
-      }
-    }
-
-    #swagger.responses[400] = {
-      description: 'Validation error (password mismatch or weak password)'
-    }
-
-    #swagger.responses[401] = {
-      description: 'Current password is incorrect'
-    }
-  }
-  */
-
-  authenticate,
-  asyncHandler(authController.changePassword),
+  userValidator.loginValidationRules(),
+  validate,
+  asyncHandler(controller.login),
 );
 
 /********************************************
@@ -299,7 +166,7 @@ router.post(
 
   /*
     #swagger.tags = ['Authentication']
-    #swagger.summary = 'Logout user'
+    #swagger.summary = 'Logout user (Must be logged in)'
     #swagger.description = 'Logs out the authenticated user.'
 
     #swagger.security = [{
@@ -320,7 +187,7 @@ router.post(
   */
 
   authenticate,
-  asyncHandler(authController.logout),
+  asyncHandler(controller.logout),
 );
 
 module.exports = router;

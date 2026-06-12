@@ -1,101 +1,99 @@
 const express = require("express");
 
 const controller = require("../controllers/users.controller");
+const asyncHandler = require("../utils/asyncHandler");
 
 const authenticate = require("../middleware/authenticate");
-const authorize = require("../middleware/authorize");
-const validateObjectId = require("../middleware/validateObjectId");
-const asyncHandler = require("../utils/asyncHandler");
+const validate = require("../middleware/validate");
+
+const userValidator = require("../validators/user.validator");
 
 const router = express.Router();
 
-// Get all users (Admin only)
-router.get(
-  "/",
+/*********************************
+ * USER PROFILE
+ *********************************/
 
-  /**
-    #swagger.tags = ['Users']
-    #swagger.summary = 'Get all users (Admins only)'
-    #swagger.security = [{
-      "BearerAuth": []
-    }]
-   * 
-   */
-  authenticate,
-  authorize("admin"),
-  asyncHandler(controller.getAllUsers),
-);
-
-// Get single user (self or admin logic handled in controller and service)
 router.get(
-  "/:id",
+  "/profile",
 
   /*
-    #swagger.tags = ['Users']
-    #swagger.summary = 'Get user by ID (Must be authenticated)'
+    #swagger.tags = ['User Profile']
+    #swagger.summary = 'Get current user profile'
+
     #swagger.security = [{
-      "BearerAuth": []
+      "BearerAuth":[]
     }]
-  
   */
+
   authenticate,
-  validateObjectId,
-  asyncHandler(controller.getUserById),
+  asyncHandler(controller.getUserProfile),
 );
 
-// Update user (IMPORTANT: should be restricted properly)
 router.put(
-  "/:id",
-  /* 
-    #swagger.tags = ['Users']
-    #swagger.summary = 'Update user profile'
-    #swagger.description = 'Updates user information. Email, Google ID and role cannot be modified.'
+  "/profile",
+
+  /*
+    #swagger.tags = ['User Profile']
+
+    #swagger.summary = 'Update current user profile'
+
+    #swagger.description =
+    'Updates user personal information. Email and role cannot be changed.'
+
     #swagger.security = [{
-      "BearerAuth": []
+      "BearerAuth":[]
     }]
-    #swagger.parameters['id'] = {
-      in: 'path',
-      description: 'User ID',
-      required: true,
-      type: 'string'
-    }
+
+
     #swagger.parameters['body'] = {
-      in: 'body',
-      description: 'User profile information',
-      required: true,
-      schema: {
-        firstName: 'Baron',
-        lastName: 'Mboka',
-        phoneNumber: '+243812345678',
-        profileImage: 'https://example.com/avatar.jpg'
+      in:'body',
+      required:true,
+      schema:{
+        firstName:"John",
+        lastName:"Doe",
+        phoneNumber:"+243850000000",
+        profileImage:"https://example.com/avatar.jpg"
       }
     }
-    #swagger.responses[200] = {
-      description: 'User updated successfully'
-    }
+
   */
+
   authenticate,
-  validateObjectId,
-  asyncHandler(controller.updateUser),
+  userValidator.updateProfileValidationRules(),
+  validate,
+  asyncHandler(controller.updateProfile),
 );
 
-// Delete user (Admin only)
-router.delete(
-  "/:id",
-  /**
-    #swagger.tags = ['Users']
-    #swagger.summary = 'Delete user'
+router.put(
+  "/change-password",
+
+  /*
+    #swagger.tags = ['User Profile']
+
+    #swagger.summary = 'Change password'
+
     #swagger.security = [{
-      "BearerAuth": []
+      "BearerAuth":[]
     }]
-    #swagger.responses[200] = {
-      description: 'User deleted successfully!'
+
+
+    #swagger.parameters['body'] = {
+      in:'body',
+      required:true,
+      schema:{
+        currentPassword:"OldPassword123",
+        newPassword:"NewPassword123",
+        confirmPassword:"NewPassword123"
+      }
     }
+
   */
+
   authenticate,
-  authorize("admin"),
-  validateObjectId,
-  asyncHandler(controller.deleteUser),
+  userValidator.changePasswordValidationRules(),
+  validate,
+  asyncHandler(controller.changePassword),
 );
 
 module.exports = router;

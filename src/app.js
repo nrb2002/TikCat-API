@@ -46,6 +46,9 @@ app.use("/auth", require("./routes/auth.routes"));
 // Users
 app.use("/users", require("./routes/users.routes"));
 
+// Admins
+app.use("/admin", require("./routes/admin.routes"));
+
 // Events
 app.use("/events", require("./routes/events.routes"));
 

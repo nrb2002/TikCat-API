@@ -25,12 +25,14 @@ const userSchema = new mongoose.Schema(
 
     password: {
       type: String,
-      minlength: 6,
+      minlength: [6, "Password must be at least 6 characters"],
+      select: false,
     },
 
     googleId: {
       type: String,
-      default: null,
+      unique: true,
+      sparse: true,
     },
 
     role: {
@@ -39,7 +41,7 @@ const userSchema = new mongoose.Schema(
         values: ROLES,
         message: "Invalid user role",
       },
-      default: ROLES[2], // Default to "Attendee"
+      default: "attendee",
       index: true,
     },
 
@@ -52,7 +54,24 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+
+    bio: {
+      type: String,
+      maxlength: 500,
+      default: null,
+    },
+
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
   },
+
   {
     timestamps: true,
   },
@@ -68,7 +87,6 @@ userSchema.set("toJSON", {
       phoneNumber: ret.phoneNumber,
       profileImage: ret.profileImage,
       role: ret.role,
-      googleId: ret.googleId,
       createdAt: ret.createdAt,
       updatedAt: ret.updatedAt,
     };

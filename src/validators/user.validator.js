@@ -83,18 +83,16 @@ const changePasswordValidationRules = () => [
   body("currentPassword")
     .trim()
     .notEmpty()
-    .withMessage("Current password is required")
     .bail()
-    .isLength({ min: 6 })
-    .withMessage("Current password must be at least 6 characters long"),
+    .withMessage("Please enter your current password!"),
 
   body("newPassword")
     .trim()
     .notEmpty()
-    .withMessage("New password is required")
+    .withMessage("New password is required!")
     .bail()
     .isLength({ min: 6 })
-    .withMessage("New password must be at least 6 characters long"),
+    .withMessage("New password must be at least 6 characters long!"),
 
   body("confirmPassword")
     .trim()
