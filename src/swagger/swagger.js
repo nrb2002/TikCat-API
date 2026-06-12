@@ -6,6 +6,7 @@ const doc = {
     version: "1.0.0",
     description:
       "API documentation for TikCat, a ticketing platform built with Node.js, Express, MongoDB, Passport.js, and JWT authentication.",
+    site:"tikcat-api.onrender.com"
   },
 
   host:

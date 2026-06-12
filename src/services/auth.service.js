@@ -47,7 +47,7 @@ const register = async (data) => {
     email: data.email,
     phoneNumber: data.phoneNumber,
     password: hashedPassword,
-    role: ROLES[2], // Default to attendee
+    role: ROLES[2], // Default to Attendee
   });
 
   return user;
@@ -76,6 +76,90 @@ const login = async (email, password) => {
   }
 
   return user;
+};
+
+/**
+ * =========================
+ * PROFILE (GET)
+ * =========================
+ */
+const getProfile = async (userId) => {
+  const user = await User.findById(userId);
+
+  if (!user) {
+    throw new AppError("User not found", 404);
+  }
+
+  return user;
+};
+
+/**
+ * =========================
+ * UPDATE PROFILE
+ * =========================
+ */
+const updateProfile = async (userId, data) => {
+  const user = await User.findByIdAndUpdate(
+    userId,
+    {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      role: data.role,
+      profileImage: data.profileImage,
+      phoneNumber: data.phoneNumber,
+    },
+    { new: true },
+  );
+
+  if (!user) {
+    throw new AppError("User not found", 404);
+  }
+
+  return user;
+};
+
+/**
+ * =========================
+ * CHANGE PASSWORD
+ * =========================
+ */
+const changePassword = async (
+  userId,
+  currentPassword,
+  newPassword,
+  confirmPassword,
+) => {
+  //Check if any of the required field is empty
+  if (!newPassword || !confirmPassword || !currentPassword) {
+    throw new AppError("All fields are required", 400);
+  }
+
+  const user = await User.findById(userId);
+
+  if (!user) {
+    throw new AppError("User not found", 404);
+  }
+
+  if (!user.password) {
+    throw new AppError("Google accounts cannot change password", 400);
+  }
+
+  // confirm password check
+  if (newPassword !== confirmPassword) {
+    throw new AppError("Passwords do not match", 400);
+  }
+
+  const isMatch = await bcrypt.compare(currentPassword, user.password);
+
+  if (!isMatch) {
+    throw new AppError("Current password is incorrect!", 401);
+  }
+
+  user.password = await bcrypt.hash(newPassword, 10);
+  await user.save();
+
+  return true;
 };
 
 /**
@@ -113,6 +197,9 @@ module.exports = {
   register,
   login,
   findOrCreateGoogleUser,
+  getProfile,
+  updateProfile,
+  changePassword,
   logout,
   buildAuthResponse,
 };
