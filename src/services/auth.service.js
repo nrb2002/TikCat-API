@@ -59,14 +59,16 @@ const register = async (data) => {
  * =========================
  */
 const login = async (email, password) => {
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email }).select("+password");
+
+  console.log("User Password", user?.password);
 
   if (!user) {
     throw new AppError("Invalid credentials", 401);
   }
 
   if (!user.password) {
-    throw new AppError("Please login using Google", 400);
+    throw new AppError("This account uses Google authentication. Please login using Google", 400);
   }
 
   const isMatch = await bcrypt.compare(password, user.password);
