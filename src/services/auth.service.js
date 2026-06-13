@@ -60,7 +60,7 @@ const register = async (data) => {
  */
 const login = async (email, password) => {
   const user = await User.findOne({ email }).select("+password");
-  
+
   //console.log("User Password", user?.password); //For testing only
 
   if (!user) {
