@@ -1,5 +1,5 @@
 const Event = require("../models/Event");
-const AppError = require("../utils/AppError");
+const AppError = require("../utils/appError");
 
 const getAllEvents = async () => {
   return Event.find()
