@@ -68,7 +68,10 @@ const login = async (email, password) => {
   }
 
   if (!user.password) {
-    throw new AppError("This account uses Google authentication. Please login using Google", 400);
+    throw new AppError(
+      "This account uses Google authentication. Please login using Google",
+      400,
+    );
   }
 
   const isMatch = await bcrypt.compare(password, user.password);
@@ -89,7 +92,7 @@ const getProfile = async (userId) => {
   const user = await User.findById(userId);
 
   if (!user) {
-    throw new AppError("User not found", 404);
+    throw new AppError("User not found!", 404);
   }
 
   return user;
@@ -115,7 +118,7 @@ const updateProfile = async (userId, data) => {
   );
 
   if (!user) {
-    throw new AppError("User not found", 404);
+    throw new AppError("User not found!", 404);
   }
 
   return user;
@@ -137,14 +140,22 @@ const changePassword = async (
     throw new AppError("All fields are required", 400);
   }
 
-  const user = await User.findById(userId);
+  const user = await User.findById(userId).select("+password");
 
+  console.log({
+    requestedId: userId,
+    foundUserId: user?._id,
+    email: user?.email,
+    password: user?.password,
+    googleId: user?.googleId
+  });
+  
   if (!user) {
-    throw new AppError("User not found", 404);
+    throw new AppError("User not found!", 404);
   }
 
   if (!user.password) {
-    throw new AppError("Google accounts cannot change password", 400);
+    throw new AppError("Google accounts cannot change password!", 400);
   }
 
   // confirm password check
