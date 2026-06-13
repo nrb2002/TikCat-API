@@ -20,6 +20,7 @@ router.get(
     #swagger.tags = ['Google OAuth']
     #swagger.summary = 'Login with Google'
     #swagger.description = 'Redirects the user to Google OAuth authentication.'
+    #swagger.ignore = true
   */
 
   passport.authenticate("google", {
@@ -53,11 +54,13 @@ router.get(
     #swagger.responses[401] = {
       description: 'Authentication failed'
     }
+
+    #swagger.ignore = true
   */
 
   passport.authenticate("google", {
     session: false,
-    failureRedirect: "/login",
+    failureRedirect: "/auth/login",
   }),
   asyncHandler(controller.googleCallback),
 );
