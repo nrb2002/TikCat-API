@@ -1,5 +1,5 @@
 const categoryService = require("../services/categories.service");
-const AppError = require("../utils/AppError");
+const AppError = require("../utils/appError");
 
 const getAllCategories = async (req, res) => {
   const categories = await categoryService.getAllCategories();

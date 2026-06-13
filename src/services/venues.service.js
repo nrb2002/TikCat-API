@@ -1,5 +1,5 @@
 const Venue = require("../models/Venue");
-const AppError = require("../utils/AppError");
+const AppError = require("../utils/appError");
 
 /**
  * GET ALL VENUES

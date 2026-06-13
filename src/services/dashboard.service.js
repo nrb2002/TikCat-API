@@ -1,7 +1,7 @@
 const User = require("../models/User");
 const Event = require("../models/Event");
 const Order = require("../models/Order");
-const AppError = require("../utils/AppError");
+const AppError = require("../utils/appError");
 
 const getDashboardStats = async () => {
   try {

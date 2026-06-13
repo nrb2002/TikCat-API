@@ -1,5 +1,5 @@
 const QRCode = require("qrcode");
-const AppError = require("../utils/AppError");
+const AppError = require("../utils/appError");
 
 /**
  * Generates a QR code image (base64 string)

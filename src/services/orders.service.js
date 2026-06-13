@@ -7,7 +7,7 @@ const Order = require("../models/Order");
 
 const generateTicketCode = require("../utils/generateTicketCode");
 const qrCodeService = require("./qrCode.service");
-const AppError = require("../utils/AppError");
+const AppError = require("../utils/appError");
 
 /**
  * GET ALL ORDERS

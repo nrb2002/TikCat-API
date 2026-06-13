@@ -1,5 +1,5 @@
 const Ticket = require("../models/Ticket");
-const AppError = require("../utils/AppError");
+const AppError = require("../utils/appError");
 
 /**
  * GET ALL TICKETS

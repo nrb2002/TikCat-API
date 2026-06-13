@@ -1,5 +1,5 @@
 const Category = require("../models/Category");
-const AppError = require("../utils/AppError");
+const AppError = require("../utils/appError");
 
 const getAllCategories = async () => {
   return Category.find().sort({ name: 1 });

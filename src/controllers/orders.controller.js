@@ -1,5 +1,5 @@
 const orderService = require("../services/orders.service");
-const AppError = require("../utils/AppError");
+const AppError = require("../utils/appError");
 
 const getAllOrders = async (req, res) => {
   const orders = await orderService.getAllOrders();

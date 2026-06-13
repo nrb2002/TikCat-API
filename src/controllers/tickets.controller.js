@@ -1,5 +1,5 @@
 const ticketService = require("../services/tickets.service");
-const AppError = require("../utils/AppError");
+const AppError = require("../utils/appError");
 
 const getAllTickets = async (req, res) => {
   const tickets = await ticketService.getAllTickets();
