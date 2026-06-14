@@ -52,4 +52,23 @@ const venueSchema = new mongoose.Schema(
   },
 );
 
+venueSchema.set("toJSON", {
+  transform: (doc, ret) => {
+    return {
+      _id: ret._id,
+      name: ret.name,
+      address: ret.address,
+      city: ret.city,
+      capacity: ret.capacity,
+      contactPhone: ret.contactPhone,
+      imageUrl: ret.imageUrl,
+      ownerId: ret.ownerId,
+      createdAt: ret.createdAt,
+      updatedAt: ret.updatedAt,
+    };
+  },
+});
+
+      
+
 module.exports = mongoose.model("Venue", venueSchema);
