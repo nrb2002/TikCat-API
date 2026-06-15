@@ -22,31 +22,48 @@ const getEventById = async (id) => {
   return event;
 };
 
-const createEvent = async (data, organizerId) => {
+//Create a new event
+const createEvent = async (data, userId) => {
+  //For testing purposes
+  //console.log("EVENT DATA: ", data);
+
   if (!data?.totalTickets) {
     throw new AppError("totalTickets is required", 400);
   }
 
   return Event.create({
     ...data,
-    organizerId,
+    organizerId: userId,
     availableTickets: data.totalTickets,
   });
 };
 
-const updateEvent = async (id, data) => {
-  // prevent critical field tampering
+const updateEvent = async (id, data, userId, role) => {
+
+  const event = await Event.findById(id);
+
+  if (!event) {
+    throw new AppError("Event not found",404);
+  }
+
+  if (
+    role !== "admin" &&
+    event.organizerId.toString() !== userId.toString()
+  ) {
+    throw new AppError(
+      "You cannot modify this event",
+      403
+    );
+  }
+
+
   delete data.organizerId;
   delete data.availableTickets;
 
-  const event = await Event.findByIdAndUpdate(id, data, {
-    new: true,
-    runValidators: true,
-  });
 
-  if (!event) {
-    throw new AppError("Event not found", 404);
-  }
+  Object.assign(event,data);
+
+  await event.save();
 
   return event;
 };

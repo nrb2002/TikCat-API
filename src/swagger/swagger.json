@@ -6,10 +6,10 @@
     "description": "API documentation for TikCat, a ticketing platform built with Node.js, Express, MongoDB, Passport.js, and JWT authentication.",
     "site": "tikcat-api.onrender.com"
   },
-  "host": "tikcat-api.onrender.com",
+  "host": "localhost:5000",
   "basePath": "/",
   "schemes": [
-    "https"
+    "http"
   ],
   "securityDefinitions": {
     "BearerAuth": {
@@ -580,7 +580,7 @@
           "Events"
         ],
         "summary": "Create events (Admins and Organizers only)",
-        "description": "Creates a new events.",
+        "description": "Creates a new event.",
         "parameters": [
           {
             "name": "authorization",
@@ -611,7 +611,7 @@
                   "type": "string",
                   "example": "684b2d6a1234567890123457"
                 },
-                "eventsDate": {
+                "eventDate": {
                   "type": "string",
                   "example": "2026-12-15"
                 },
@@ -637,7 +637,7 @@
                 },
                 "status": {
                   "type": "string",
-                  "example": "Published"
+                  "example": "published"
                 }
               }
             }
@@ -677,7 +677,7 @@
         "responses": {
           "200": {
             "schema": {
-              "$ref": "#/definitions/Event"
+              "$ref": "#/definitions/Events"
             },
             "description": "OK"
           },
@@ -694,14 +694,14 @@
           "Events"
         ],
         "summary": "Update events (Admins and Organizers only)",
-        "description": "Updates an existing events.",
+        "description": "Updates an existing event.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "type": "string",
-            "description": "Events ID"
+            "description": "Event ID"
           },
           {
             "name": "authorization",
@@ -742,7 +742,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Events updated successfully"
+            "description": "Event updated successfully"
           },
           "400": {
             "description": "Bad Request"
@@ -761,15 +761,15 @@
         "tags": [
           "Events"
         ],
-        "summary": "Delete events (Admins and Organizers only)",
-        "description": "Deletes an existing events.",
+        "summary": "Delete event (Admins and Organizers only)",
+        "description": "Deletes an existing event.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "type": "string",
-            "description": "Events ID"
+            "description": "Event ID"
           },
           {
             "name": "authorization",

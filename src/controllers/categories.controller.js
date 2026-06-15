@@ -1,49 +1,78 @@
-const categoryService = require("../services/categories.service");
+const service = require("../services/categories.service");
 const AppError = require("../utils/appError");
+const { successResponse } = require("../utils/apiResponse");
+const formatResponse = require("../utils/formatResponse");
 
 const getAllCategories = async (req, res) => {
-  const categories = await categoryService.getAllCategories();
+  const categories = await service.getAllCategories();
 
-  res.status(200).json(categories);
+  return res.status(200).json(
+    formatResponse({
+      success: true,
+      message: categories.length
+        ? "Categories retrieved successfully!"
+        : "No categories found!",
+      data: categories,
+    })
+  );
 };
 
 const getCategoryById = async (req, res) => {
-  const category = await categoryService.getCategoryById(req.params.id);
+  const category = await service.getCategoryById(req.params.id);
 
   if (!category) {
-    throw new AppError("Category not found", 404);
+    throw new AppError("Category not found!", 404);
   }
 
-  res.status(200).json(category);
+  return res.status(200).json(
+    successResponse(
+      "Category retrieved successfully!",
+      category
+    )
+  );
 };
 
 const createCategory = async (req, res) => {
-  const category = await categoryService.createCategory(req.body);
+  const category = await service.createCategory(req.body);
 
-  res.status(201).json(category);
+  return res.status(201).json(
+    successResponse(
+      "Category created successfully!",
+      category
+    )
+  );
 };
 
 const updateCategory = async (req, res) => {
-  const category = await categoryService.updateCategory(
+  const category = await service.updateCategory(
     req.params.id,
-    req.body,
+    req.body
   );
 
   if (!category) {
-    throw new AppError("Category not found", 404);
+    throw new AppError("Category not found!", 404);
   }
 
-  res.status(200).json(category);
+  return res.status(200).json(
+    successResponse(
+      "Category updated successfully!",
+      category
+    )
+  );
 };
 
 const deleteCategory = async (req, res) => {
-  const category = await categoryService.deleteCategory(req.params.id);
+  const category = await service.deleteCategory(req.params.id);
 
   if (!category) {
-    throw new AppError("Category not found", 404);
+    throw new AppError("Category not found!", 404);
   }
 
-  res.status(204).send();
+  return res.status(200).json(
+    successResponse(
+      "Category deleted successfully!"
+    )
+  );
 };
 
 module.exports = {

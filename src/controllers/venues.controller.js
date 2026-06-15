@@ -1,51 +1,78 @@
-const venueService = require("../services/venues.service");
+const service = require("../services/venues.service");
+const AppError = require("../utils/appError");
+const { successResponse } = require("../utils/apiResponse");
+const formatResponse = require("../utils/formatResponse");
 
 const getAllVenues = async (req, res) => {
-  const venues = await venueService.getAllVenues();
+  const venues = await service.getAllVenues();
 
-  res.status(200).json(venues);
+  return res.status(200).json(
+    formatResponse({
+      success: true,
+      message: venues.length
+        ? "Venues retrieved successfully!"
+        : "No venues found!",
+      data: venues,
+    })
+  );
 };
 
 const getVenueById = async (req, res) => {
-  const venue = await venueService.getVenueById(req.params.id);
+  const venue = await service.getVenueById(req.params.id);
 
   if (!venue) {
-    return res.status(404).json({
-      message: "Venue not found",
-    });
+    throw new AppError("Venue not found!", 404);
   }
 
-  res.status(200).json(venue);
+  return res.status(200).json(
+    successResponse(
+      "Venue retrieved successfully!",
+      venue
+    )
+  );
 };
 
 const createVenue = async (req, res) => {
-  const venue = await venueService.createVenue(req.body);
+  const venue = await service.createVenue(req.body);
 
-  res.status(201).json(venue);
+  return res.status(201).json(
+    successResponse(
+      "Venue created successfully!",
+      venue
+    )
+  );
 };
 
 const updateVenue = async (req, res) => {
-  const venue = await venueService.updateVenue(req.params.id, req.body);
+  const venue = await service.updateVenue(
+    req.params.id,
+    req.body
+  );
 
   if (!venue) {
-    return res.status(404).json({
-      message: "Venue not found",
-    });
+    throw new AppError("Venue not found!", 404);
   }
 
-  res.status(200).json(venue);
+  return res.status(200).json(
+    successResponse(
+      "Venue updated successfully!",
+      venue
+    )
+  );
 };
 
 const deleteVenue = async (req, res) => {
-  const venue = await venueService.deleteVenue(req.params.id);
+  const venue = await service.deleteVenue(req.params.id);
 
   if (!venue) {
-    return res.status(404).json({
-      message: "Venue not found",
-    });
+    throw new AppError("Venue not found!", 404);
   }
 
-  res.status(204).send();
+  return res.status(200).json(
+    successResponse(
+      "Venue deleted successfully!"
+    )
+  );
 };
 
 module.exports = {
