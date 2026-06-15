@@ -9,6 +9,7 @@ const asyncHandler = require("../utils/asyncHandler");
 
 const router = express.Router();
 
+//Get all events
 router.get(
   "/",
   /* 
@@ -22,7 +23,7 @@ router.get(
   asyncHandler(controller.getAllEvents),
 );
 
-//Get single events
+//Get single event
 router.get(
   "/:id",
   /* 
@@ -35,24 +36,24 @@ router.get(
       type: 'string'
     }
     #swagger.responses[200] = {
-      schema: { $ref: '#/definitions/Event' }
+      schema: { $ref: '#/definitions/Events' }
     }
     #swagger.responses[404] = {
       description: 'Event not found'
     }
   */
   validateObjectId("id"),
-  asyncHandler(controller.getEventsById),
+  asyncHandler(controller.getEventById),
 );
 
-//Create a new events
+//Create a new event
 router.post(
   "/",
 
   /* 
     #swagger.tags = ['Events']
     #swagger.summary = 'Create events (Admins and Organizers only)'
-    #swagger.description = 'Creates a new events.'
+    #swagger.description = 'Creates a new event.'
     #swagger.security = [{
       "BearerAuth": []
     }]
@@ -65,13 +66,13 @@ router.post(
         description: 'Annual technology conference',
         categoryId: '684b2d6a1234567890123456',
         venueId: '684b2d6a1234567890123457',
-        eventsDate: '2026-12-15',
+        eventDate: '2026-12-15',
         startTime: '09:00',
         endTime: '17:00',
         ticketPrice: 50,
         totalTickets: 500,
         imageUrl: 'https://example.com/events.jpg',
-        status: 'Published'
+        status: 'published'
       }
     }
     #swagger.responses[201] = {
@@ -81,7 +82,7 @@ router.post(
 
   authenticate,
   authorize("admin", "organizer"),
-  asyncHandler(controller.createEvents),
+  asyncHandler(controller.createEvent),
 );
 
 //Update an existing events
@@ -91,13 +92,13 @@ router.put(
   /* 
     #swagger.tags = ['Events']
     #swagger.summary = 'Update events (Admins and Organizers only)'
-    #swagger.description = 'Updates an existing events.'
+    #swagger.description = 'Updates an existing event.'
     #swagger.security = [{
       "BearerAuth": []
     }]
     #swagger.parameters['id'] = {
       in: 'path',
-      description: 'Events ID',
+      description: 'Event ID',
       required: true,
       type: 'string'
     }
@@ -110,17 +111,17 @@ router.put(
         description: 'Updated conference description',
         ticketPrice: 75,
         totalTickets: 750,
-        status: 'Published'
+        status: 'published'
       }
     }
     #swagger.responses[200] = {
-      description: 'Events updated successfully'
+      description: 'Event updated successfully'
     }
   */
   authenticate,
   authorize("admin", "organizer"),
   validateObjectId("id"),
-  asyncHandler(controller.updateEvents),
+  asyncHandler(controller.updateEvent),
 );
 
 //Delete an events
@@ -128,14 +129,14 @@ router.delete(
   "/:id",
   /**
     #swagger.tags = ['Events']
-    #swagger.summary = 'Delete events (Admins and Organizers only)'
-    #swagger.description = 'Deletes an existing events.'
+    #swagger.summary = 'Delete event (Admins and Organizers only)'
+    #swagger.description = 'Deletes an existing event.'
     #swagger.security = [{
       "BearerAuth": []
     }]
     #swagger.parameters['id'] = {
       in: 'path',
-      description: 'Events ID',
+      description: 'Event ID',
       required: true,
       type: 'string'
     }
@@ -143,7 +144,7 @@ router.delete(
   authenticate,
   authorize("admin", "organizer"),
   validateObjectId("id"),
-  asyncHandler(controller.deleteEvents),
+  asyncHandler(controller.deleteEvent),
 );
 
 module.exports = router;

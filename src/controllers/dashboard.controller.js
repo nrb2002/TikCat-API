@@ -1,9 +1,15 @@
-const dashboardService = require("../services/dashboard.service");
+const service = require("../services/dashboard.service");
+const { successResponse } = require("../utils/apiResponse");
 
 const getDashboardStats = async (req, res) => {
-  const stats = await dashboardService.getDashboardStats();
+  const stats = await service.getDashboardStats();
 
-  res.status(200).json(stats);
+  return res.status(200).json(
+    successResponse(
+      "Dashboard stats retrieved successfully!",
+      stats
+    )
+  );
 };
 
 module.exports = {

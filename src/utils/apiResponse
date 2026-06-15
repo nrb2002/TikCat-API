@@ -1,0 +1,23 @@
+const formatResponse = require("./formatResponse");
+
+const successResponse = (message, data = null, meta = null) => {
+  return formatResponse({
+    success: true,
+    message,
+    data,
+    meta,
+  });
+};
+
+const errorResponse = (message, data = null) => {
+  return formatResponse({
+    success: false,
+    message,
+    data,
+  });
+};
+
+module.exports = {
+  successResponse,
+  errorResponse,
+};
