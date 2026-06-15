@@ -41,7 +41,7 @@ router.get(
       description: 'Event not found'
     }
   */
-  validateObjectId,
+  validateObjectId("id"),
   asyncHandler(controller.getEventsById),
 );
 
@@ -119,7 +119,7 @@ router.put(
   */
   authenticate,
   authorize("admin", "organizer"),
-  validateObjectId,
+  validateObjectId("id"),
   asyncHandler(controller.updateEvents),
 );
 
@@ -142,7 +142,7 @@ router.delete(
   */
   authenticate,
   authorize("admin", "organizer"),
-  validateObjectId,
+  validateObjectId("id"),
   asyncHandler(controller.deleteEvents),
 );
 

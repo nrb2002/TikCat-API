@@ -77,7 +77,7 @@ const changePassword = async (
     throw new AppError("Passwords do not match", 400);
   }
 
-  const user = await User.findById(userId);
+  const user = await User.findById(userId).select("+password");
 
   if (!user) {
     throw new AppError("User not found", 404);
