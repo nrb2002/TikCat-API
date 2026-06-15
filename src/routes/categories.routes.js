@@ -42,7 +42,7 @@ router.get(
       description: 'Category not found'
     }
   */
-  validateObjectId,
+  validateObjectId("id"),
   asyncHandler(controller.getCategoryById),
 );
 
@@ -106,7 +106,7 @@ router.put(
 
   authenticate,
   authorize("admin"),
-  validateObjectId,
+  validateObjectId("id"),
   asyncHandler(controller.updateCategory),
 );
 
@@ -132,7 +132,7 @@ router.delete(
   */
   authenticate,
   authorize("admin"),
-  validateObjectId,
+  validateObjectId("id"),
   asyncHandler(controller.deleteCategory),
 );
 

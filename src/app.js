@@ -70,6 +70,13 @@ app.use("/dashboard", require("./routes/dashboard.routes"));
 // Swagger Documentation
 app.use("/api-docs", require("./routes/swagger.routes"));
 
+
+
+app.use((req, res, next) => {
+  console.log("REQUEST:", req.method, req.originalUrl, res.statusCode);
+  next();
+});
+
 /* =========================
    HEALTH CHECK
 ========================= */

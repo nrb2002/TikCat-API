@@ -26,7 +26,7 @@ router.get(
     #swagger.tags = ['Venues']
     #swagger.summary = 'Get venue by ID'
    */
-  validateObjectId,
+  validateObjectId("id"),
   asyncHandler(controller.getVenueById),
 );
 
@@ -97,7 +97,7 @@ router.put(
 */
   authenticate,
   authorize("admin", "organizer"),
-  validateObjectId,
+  validateObjectId("id"),
   asyncHandler(controller.updateVenue),
 );
 
@@ -119,7 +119,7 @@ router.delete(
   */
   authenticate,
   authorize("admin"),
-  validateObjectId,
+  validateObjectId("id"),
   asyncHandler(controller.deleteVenue),
 );
 

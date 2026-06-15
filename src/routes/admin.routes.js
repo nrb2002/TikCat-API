@@ -70,7 +70,7 @@ router.get(
 
   authenticate,
   authorize("admin"),
-  validateObjectId,
+  validateObjectId("id"),
   asyncHandler(controller.getUserById),
 );
 
@@ -111,10 +111,10 @@ router.put(
   */
 
   authenticate,
-  authorize("admin"),
-  validateObjectId,
+  authorize("admin"),  
   userValidator.updateProfileValidationRules(),
   validate,
+  validateObjectId("id"),
   asyncHandler(controller.updateUser),
 );
 
@@ -141,7 +141,7 @@ router.delete(
 
   authenticate,
   authorize("admin"),
-  validateObjectId,
+  validateObjectId("id"),
   asyncHandler(controller.deleteUser),
 );
 

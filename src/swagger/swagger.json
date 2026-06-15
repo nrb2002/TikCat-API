@@ -6,10 +6,10 @@
     "description": "API documentation for TikCat, a ticketing platform built with Node.js, Express, MongoDB, Passport.js, and JWT authentication.",
     "site": "tikcat-api.onrender.com"
   },
-  "host": "localhost:5000",
+  "host": "tikcat-api.onrender.com",
   "basePath": "/",
   "schemes": [
-    "http"
+    "https"
   ],
   "securityDefinitions": {
     "BearerAuth": {

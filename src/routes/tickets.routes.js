@@ -46,7 +46,7 @@ router.get(
   */
   authenticate,
   authorize("admin", "organizer"),
-  validateObjectId,
+  validateObjectId("id"),
   asyncHandler(controller.getTicketById),
 );
 
@@ -72,7 +72,7 @@ router.patch(
 */
   authenticate,
   authorize("admin", "organizer"),
-  validateObjectId,
+  validateObjectId("id"),
   asyncHandler(controller.validateTicket),
 );
 

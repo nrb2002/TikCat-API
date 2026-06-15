@@ -58,6 +58,15 @@ const getAllUsers = async (req, res) => {
  * ADMIN ONLY
  ********************************/
 const getUserById = async (req, res) => {
+  // console.log("1 - controller reached");
+
+  // res.status(200).json({
+  //   success:true,
+  //   message:"controller works"
+  // });
+
+
+
   const result = await service.getSingleUser(req.params.id);
 
   res.status(200).json(result);

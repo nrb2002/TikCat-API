@@ -1,3 +1,5 @@
+//authorize.js
+
 const authorize = (...allowedRoles) => {
   return (req, res, next) => {
     try {
