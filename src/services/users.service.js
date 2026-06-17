@@ -40,7 +40,7 @@ const updateProfile = async (userId, data) => {
   const user = await User.findById(userId);
 
   if (!user) {
-    throw new AppError("User not found", 404);
+    throw new AppError("User not found!", 404);
   }
 
   user.firstName = data.firstName ?? user.firstName;
@@ -70,11 +70,11 @@ const changePassword = async (
   }
 
   if (newPassword.length < 6) {
-    throw new AppError("Password must be at least 6 characters", 400);
+    throw new AppError("Password must be at least 6 characters!", 400);
   }
 
   if (newPassword !== confirmPassword) {
-    throw new AppError("Passwords do not match", 400);
+    throw new AppError("Passwords do not match!", 400);
   }
 
   const user = await User.findById(userId).select("+password");
@@ -84,13 +84,13 @@ const changePassword = async (
   }
 
   if (!user.password) {
-    throw new AppError("Google accounts cannot change password", 400);
+    throw new AppError("Google accounts cannot change password!", 400);
   }
 
   const isMatch = await bcrypt.compare(currentPassword, user.password);
 
   if (!isMatch) {
-    throw new AppError("Current password is incorrect", 401);
+    throw new AppError("Current password is incorrect!", 401);
   }
 
   user.password = await bcrypt.hash(newPassword, 10);
@@ -99,7 +99,7 @@ const changePassword = async (
 
   return {
     success: true,
-    message: "Password updated successfully",
+    message: "Password updated successfully!",
   };
 };
 

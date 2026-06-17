@@ -43,7 +43,7 @@ const deleteCategory = async (id) => {
   const category = await Category.findByIdAndDelete(id);
 
   if (!category) {
-    throw new AppError("Category not found", 404);
+    throw new AppError("Category not found!", 404);
   }
 
   return category;
