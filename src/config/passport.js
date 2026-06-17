@@ -12,7 +12,7 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        const user = await authService.findOrCreateUser(profile);
+        const user = await authService.findOrCreateGoogleUser(profile);
 
         return done(null, user);
       } catch (error) {
