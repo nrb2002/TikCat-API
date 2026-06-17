@@ -15,12 +15,9 @@ const getUserProfile = async (req, res) => {
     throw new AppError("User not found!", 404);
   }
 
-  return res.status(200).json(
-    successResponse(
-      "Profile retrieved successfully!",
-      user
-    )
-  );
+  return res
+    .status(200)
+    .json(successResponse("Profile retrieved successfully!", user));
 };
 
 /**
@@ -29,21 +26,15 @@ const getUserProfile = async (req, res) => {
  * =========================
  */
 const updateProfile = async (req, res) => {
-  const user = await service.updateProfile(
-    req.user._id,
-    req.body
-  );
+  const user = await service.updateProfile(req.user._id, req.body);
 
   if (!user) {
     throw new AppError("User not found!", 404);
   }
 
-  return res.status(200).json(
-    successResponse(
-      "Profile updated successfully!",
-      user
-    )
-  );
+  return res
+    .status(200)
+    .json(successResponse("Profile updated successfully!", user));
 };
 
 /**
@@ -56,15 +47,12 @@ const changePassword = async (req, res) => {
     req.user._id,
     req.body.currentPassword,
     req.body.newPassword,
-    req.body.confirmPassword
+    req.body.confirmPassword,
   );
 
-  return res.status(200).json(
-    successResponse(
-      "Password changed successfully!",
-      result
-    )
-  );
+  return res
+    .status(200)
+    .json(successResponse("Password changed successfully!", result));
 };
 
 /*********************************
@@ -81,7 +69,7 @@ const getAllUsers = async (req, res) => {
         ? "Users retrieved successfully!"
         : "No users found!",
       data: users,
-    })
+    }),
   );
 };
 
@@ -96,12 +84,9 @@ const getUserById = async (req, res) => {
     throw new AppError("User not found!", 404);
   }
 
-  return res.status(200).json(
-    successResponse(
-      "User retrieved successfully!",
-      user
-    )
-  );
+  return res
+    .status(200)
+    .json(successResponse("User retrieved successfully!", user));
 };
 
 /*********************************
@@ -109,21 +94,15 @@ const getUserById = async (req, res) => {
  * ADMIN ONLY
  ********************************/
 const updateUser = async (req, res) => {
-  const user = await service.updateUser(
-    req.params.id,
-    req.body
-  );
+  const user = await service.updateUser(req.params.id, req.body);
 
   if (!user) {
     throw new AppError("User not found!", 404);
   }
 
-  return res.status(200).json(
-    successResponse(
-      "User updated successfully!",
-      user
-    )
-  );
+  return res
+    .status(200)
+    .json(successResponse("User updated successfully!", user));
 };
 
 /*********************************
@@ -137,11 +116,7 @@ const deleteUser = async (req, res) => {
     throw new AppError("User not found!", 404);
   }
 
-  return res.status(200).json(
-    successResponse(
-      "User deleted successfully!"
-    )
-  );
+  return res.status(200).json(successResponse("User deleted successfully!"));
 };
 
 module.exports = {

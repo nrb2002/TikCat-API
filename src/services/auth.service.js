@@ -147,9 +147,9 @@ const changePassword = async (
     foundUserId: user?._id,
     email: user?.email,
     password: user?.password,
-    googleId: user?.googleId
+    googleId: user?.googleId,
   });
-  
+
   if (!user) {
     throw new AppError("User not found!", 404);
   }

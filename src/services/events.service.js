@@ -39,29 +39,20 @@ const createEvent = async (data, userId) => {
 };
 
 const updateEvent = async (id, data, userId, role) => {
-
   const event = await Event.findById(id);
 
   if (!event) {
-    throw new AppError("Event not found",404);
+    throw new AppError("Event not found", 404);
   }
 
-  if (
-    role !== "admin" &&
-    event.organizerId.toString() !== userId.toString()
-  ) {
-    throw new AppError(
-      "You cannot modify this event",
-      403
-    );
+  if (role !== "admin" && event.organizerId.toString() !== userId.toString()) {
+    throw new AppError("You cannot modify this event", 403);
   }
-
 
   delete data.organizerId;
   delete data.availableTickets;
 
-
-  Object.assign(event,data);
+  Object.assign(event, data);
 
   await event.save();
 

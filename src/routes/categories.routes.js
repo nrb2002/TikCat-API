@@ -23,7 +23,7 @@ router.get(
   asyncHandler(controller.getAllCategories),
 );
 
-//Get a single ecategory
+//Get a single category
 router.get(
   "/:id",
   /* 
@@ -110,7 +110,7 @@ router.put(
   asyncHandler(controller.updateCategory),
 );
 
-//Delete a cateogry
+//Delete a category
 router.delete(
   "/:id",
   /**

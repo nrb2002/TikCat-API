@@ -13,7 +13,7 @@ const getAllCategories = async (req, res) => {
         ? "Categories retrieved successfully!"
         : "No categories found!",
       data: categories,
-    })
+    }),
   );
 };
 
@@ -24,41 +24,29 @@ const getCategoryById = async (req, res) => {
     throw new AppError("Category not found!", 404);
   }
 
-  return res.status(200).json(
-    successResponse(
-      "Category retrieved successfully!",
-      category
-    )
-  );
+  return res
+    .status(200)
+    .json(successResponse("Category retrieved successfully!", category));
 };
 
 const createCategory = async (req, res) => {
   const category = await service.createCategory(req.body);
 
-  return res.status(201).json(
-    successResponse(
-      "Category created successfully!",
-      category
-    )
-  );
+  return res
+    .status(201)
+    .json(successResponse("Category created successfully!", category));
 };
 
 const updateCategory = async (req, res) => {
-  const category = await service.updateCategory(
-    req.params.id,
-    req.body
-  );
+  const category = await service.updateCategory(req.params.id, req.body);
 
   if (!category) {
     throw new AppError("Category not found!", 404);
   }
 
-  return res.status(200).json(
-    successResponse(
-      "Category updated successfully!",
-      category
-    )
-  );
+  return res
+    .status(200)
+    .json(successResponse("Category updated successfully!", category));
 };
 
 const deleteCategory = async (req, res) => {
@@ -68,11 +56,9 @@ const deleteCategory = async (req, res) => {
     throw new AppError("Category not found!", 404);
   }
 
-  return res.status(200).json(
-    successResponse(
-      "Category deleted successfully!"
-    )
-  );
+  return res
+    .status(200)
+    .json(successResponse("Category deleted successfully!"));
 };
 
 module.exports = {

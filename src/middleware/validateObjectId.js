@@ -6,8 +6,8 @@ const validateObjectId = (paramName) => {
 
     if (!value) {
       return res.status(400).json({
-        success:false,
-        message:`Missing ${paramName} parameter`,
+        success: false,
+        message: `Missing ${paramName} parameter`,
       });
     }
 
