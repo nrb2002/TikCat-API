@@ -1,45 +1,45 @@
-const request=require("supertest");
-const app=require("../app");
+const request = require("supertest");
+const app = require("../app");
 
-const Event=require("../models/Event");
+const Event = require("../models/Event");
 jest.mock("../models/Event");
 
-describe("Events GET endpoints",()=>{
-  test("GET /events",async()=>{
+describe("Events GET endpoints", () => {
+  test("GET /events", async () => {
     Event.find.mockReturnValue({
-      populate(){
+      populate() {
         return this;
       },
-      sort(){
+      sort() {
         return Promise.resolve([
           {
-            title:"Conference"
-          }
+            title: "Conference",
+          },
         ]);
-      }
+      },
     });
 
-    const res= await request(app).get("/events");
+    const res = await request(app).get("/events");
 
     expect(res.statusCode).toBe(200);
 
     expect(res.body.length).toBe(1);
   });
 
-  test("GET /events/:id",async()=>{
+  test("GET /events/:id", async () => {
     Event.findById.mockReturnValue({
-      populate(){
+      populate() {
         return this;
       },
-      then(resolve){
+      then(resolve) {
         resolve({
-          title:"Conference"
+          title: "Conference",
         });
-      }
+      },
     });
 
-    const res= await request(app).get("/events/6845a123abc4567890123456");
-    
+    const res = await request(app).get("/events/6845a123abc4567890123456");
+
     expect(res.statusCode).toBe(200);
   });
 });
