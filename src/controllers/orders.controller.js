@@ -16,7 +16,7 @@ const getAllOrders = async (req, res) => {
         ? "Orders retrieved successfully!"
         : "No orders found!",
       data: orders,
-    })
+    }),
   );
 };
 
@@ -32,12 +32,9 @@ const getOrderById = async (req, res) => {
     throw new AppError("Order not found!", 404);
   }
 
-  return res.status(200).json(
-    successResponse(
-      "Order retrieved successfully!",
-      order
-    )
-  );
+  return res
+    .status(200)
+    .json(successResponse("Order retrieved successfully!", order));
 };
 
 /**
@@ -46,18 +43,11 @@ const getOrderById = async (req, res) => {
 const createOrder = async (req, res) => {
   const { eventId, quantity } = req.body;
 
-  const order = await service.createOrder(
-    req.user.userId,
-    eventId,
-    quantity
-  );
+  const order = await service.createOrder(req.user.userId, eventId, quantity);
 
-  return res.status(201).json(
-    successResponse(
-      "Order created successfully!",
-      order
-    )
-  );
+  return res
+    .status(201)
+    .json(successResponse("Order created successfully!", order));
 };
 
 module.exports = {

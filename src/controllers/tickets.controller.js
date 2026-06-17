@@ -16,7 +16,7 @@ const getAllTickets = async (req, res) => {
         ? "Tickets retrieved successfully!"
         : "No tickets found!",
       data: tickets,
-    })
+    }),
   );
 };
 
@@ -32,12 +32,9 @@ const getTicketById = async (req, res) => {
     throw new AppError("Ticket not found!", 404);
   }
 
-  return res.status(200).json(
-    successResponse(
-      "Ticket retrieved successfully!",
-      ticket
-    )
-  );
+  return res
+    .status(200)
+    .json(successResponse("Ticket retrieved successfully!", ticket));
 };
 
 /**
@@ -52,12 +49,9 @@ const validateTicket = async (req, res) => {
     throw new AppError("Ticket not found!", 404);
   }
 
-  return res.status(200).json(
-    successResponse(
-      "Ticket validated successfully!",
-      ticket
-    )
-  );
+  return res
+    .status(200)
+    .json(successResponse("Ticket validated successfully!", ticket));
 };
 
 module.exports = {

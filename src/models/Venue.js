@@ -69,6 +69,4 @@ venueSchema.set("toJSON", {
   },
 });
 
-      
-
 module.exports = mongoose.model("Venue", venueSchema);

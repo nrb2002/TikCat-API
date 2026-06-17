@@ -13,7 +13,7 @@ const getAllVenues = async (req, res) => {
         ? "Venues retrieved successfully!"
         : "No venues found!",
       data: venues,
-    })
+    }),
   );
 };
 
@@ -24,41 +24,29 @@ const getVenueById = async (req, res) => {
     throw new AppError("Venue not found!", 404);
   }
 
-  return res.status(200).json(
-    successResponse(
-      "Venue retrieved successfully!",
-      venue
-    )
-  );
+  return res
+    .status(200)
+    .json(successResponse("Venue retrieved successfully!", venue));
 };
 
 const createVenue = async (req, res) => {
   const venue = await service.createVenue(req.body);
 
-  return res.status(201).json(
-    successResponse(
-      "Venue created successfully!",
-      venue
-    )
-  );
+  return res
+    .status(201)
+    .json(successResponse("Venue created successfully!", venue));
 };
 
 const updateVenue = async (req, res) => {
-  const venue = await service.updateVenue(
-    req.params.id,
-    req.body
-  );
+  const venue = await service.updateVenue(req.params.id, req.body);
 
   if (!venue) {
     throw new AppError("Venue not found!", 404);
   }
 
-  return res.status(200).json(
-    successResponse(
-      "Venue updated successfully!",
-      venue
-    )
-  );
+  return res
+    .status(200)
+    .json(successResponse("Venue updated successfully!", venue));
 };
 
 const deleteVenue = async (req, res) => {
@@ -68,11 +56,7 @@ const deleteVenue = async (req, res) => {
     throw new AppError("Venue not found!", 404);
   }
 
-  return res.status(200).json(
-    successResponse(
-      "Venue deleted successfully!"
-    )
-  );
+  return res.status(200).json(successResponse("Venue deleted successfully!"));
 };
 
 module.exports = {

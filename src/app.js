@@ -25,6 +25,11 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
 
+app.use((req, res, next) => {
+  console.log("REQUEST:", req.method, req.originalUrl, res.statusCode);
+  next();
+});
+
 app.use(passport.initialize());
 
 /* =========================
@@ -69,13 +74,6 @@ app.use("/dashboard", require("./routes/dashboard.routes"));
 
 // Swagger Documentation
 app.use("/api-docs", require("./routes/swagger.routes"));
-
-
-
-app.use((req, res, next) => {
-  console.log("REQUEST:", req.method, req.originalUrl, res.statusCode);
-  next();
-});
 
 /* =========================
    HEALTH CHECK

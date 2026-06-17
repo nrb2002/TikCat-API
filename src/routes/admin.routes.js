@@ -111,7 +111,7 @@ router.put(
   */
 
   authenticate,
-  authorize("admin"),  
+  authorize("admin"),
   userValidator.updateProfileValidationRules(),
   validate,
   validateObjectId("id"),

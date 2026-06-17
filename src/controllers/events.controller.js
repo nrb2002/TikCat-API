@@ -14,7 +14,7 @@ const getAllEvents = async (req, res) => {
         ? "Events retrieved successfully"
         : "No events found!",
       data: events,
-    })
+    }),
   );
 };
 
@@ -26,18 +26,18 @@ const getEventById = async (req, res) => {
     throw new AppError("Event not found!", 404);
   }
 
-  return res.status(200).json(
-    successResponse("Event retrieved successfully!", event)
-  );
+  return res
+    .status(200)
+    .json(successResponse("Event retrieved successfully!", event));
 };
 
 // Create a new event
 const createEvent = async (req, res) => {
   const event = await service.createEvent(req.body, req.user._id);
 
-  return res.status(201).json(
-    successResponse("Event created successfully!", event)
-  );
+  return res
+    .status(201)
+    .json(successResponse("Event created successfully!", event));
 };
 
 // Update event
@@ -46,16 +46,16 @@ const updateEvent = async (req, res) => {
     req.params.id,
     req.body,
     req.user._id,
-    req.user.role
+    req.user.role,
   );
 
   if (!event) {
     throw new AppError("Event not found!", 404);
   }
 
-  return res.status(200).json(
-    successResponse("Event updated successfully!", event)
-  );
+  return res
+    .status(200)
+    .json(successResponse("Event updated successfully!", event));
 };
 
 // Delete event
@@ -70,7 +70,7 @@ const deleteEvent = async (req, res) => {
     formatResponse({
       success: true,
       message: "Event deleted successfully!",
-    })
+    }),
   );
 };
 
