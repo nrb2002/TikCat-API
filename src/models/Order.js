@@ -17,17 +17,24 @@ const orderSchema = new mongoose.Schema(
       index: true,
     },
 
-    tickets: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Ticket",
-      },
-    ],
+    tickets: {
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Ticket",
+        },
+      ],
+      default: [],
+    },
 
     quantity: {
       type: Number,
       required: [true, "Quantity is required"],
       min: [1, "Quantity must be at least 1"],
+      validate: {
+        validator: Number.isInteger,
+        message: "Quantity must be an integer",
+      },
     },
 
     totalAmount: {
@@ -39,16 +46,17 @@ const orderSchema = new mongoose.Schema(
     paymentStatus: {
       type: String,
       enum: {
-        values: PAYMENT_STATUS,
+        values: PAYMENT_STATUS, // ["pending", "paid", "failed", "refunded"]
         message: "Invalid payment status",
       },
-      default: "pending",
+      default: "paid",
       index: true,
     },
 
-    orderDate: {
-      type: Date,
-      default: Date.now,
+    orderStatus: {
+      type: String,
+      enum: ["active", "cancelled"],
+      default: "active",
       index: true,
     },
   },
@@ -56,5 +64,10 @@ const orderSchema = new mongoose.Schema(
     timestamps: true,
   },
 );
+
+/**
+ * Prevent duplicate fast-order lookup patterns
+ */
+orderSchema.index({ userId: 1, eventId: 1 });
 
 module.exports = mongoose.model("Order", orderSchema);

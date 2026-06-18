@@ -68,6 +68,7 @@ const getAllUsers = async (req, res) => {
       message: users.length
         ? "Users retrieved successfully!"
         : "No users found!",
+      count: users.length,
       data: users,
     }),
   );

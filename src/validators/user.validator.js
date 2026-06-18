@@ -10,18 +10,17 @@ const registerValidationRules = () => [
 
   body("email")
     .trim()
+    .normalizeEmail()
     .notEmpty()
     .withMessage("Email is required")
     .isEmail()
     .withMessage("Valid email is required"),
 
   body("password")
-    .trim()
     .notEmpty()
     .withMessage("Password is required")
-    .bail()
-    .isLength({ min: 6 })
-    .withMessage("Password must be at least 6 characters long"),
+    .isLength({ min: 8 })
+    .withMessage("Password must be at least 8 characters long"),
 ];
 
 /**
@@ -30,50 +29,41 @@ const registerValidationRules = () => [
 const loginValidationRules = () => [
   body("email")
     .trim()
+    .normalizeEmail()
     .notEmpty()
     .withMessage("Email is required")
     .isEmail()
     .withMessage("Valid email is required"),
 
-  body("password")
-    .trim()
-    .notEmpty()
-    .withMessage("Password is required")
-    .bail()
-    .isLength({ min: 6 })
-    .withMessage("Password must be at least 6 characters long"),
+  body("password").notEmpty().withMessage("Password is required"),
 ];
 
 /**
  * Update Profile Validation
- *
- * Allows updating personal profile information
- * but NOT authentication or authorization fields.
  */
 const updateProfileValidationRules = () => [
   body("firstName")
     .optional()
     .trim()
     .notEmpty()
-    .withMessage("First name cannot be empty."),
+    .withMessage("First name cannot be empty"),
 
   body("lastName")
     .optional()
     .trim()
     .notEmpty()
-    .withMessage("Last name cannot be empty."),
+    .withMessage("Last name cannot be empty"),
 
   body("phoneNumber")
     .optional()
-    .trim()
-    .isLength({ min: 7, max: 20 })
+    .matches(/^[+0-9\s\-()]+$/)
     .withMessage("Invalid phone number"),
 
   body("profileImage")
     .optional()
     .trim()
     .isURL()
-    .withMessage("Profile image must be a valid URL!"),
+    .withMessage("Profile image must be a valid URL"),
 ];
 
 /**
@@ -81,30 +71,20 @@ const updateProfileValidationRules = () => [
  */
 const changePasswordValidationRules = () => [
   body("currentPassword")
-    .trim()
     .notEmpty()
-    .bail()
     .withMessage("Please enter your current password!"),
 
   body("newPassword")
-    .trim()
     .notEmpty()
     .withMessage("New password is required!")
-    .bail()
-    .isLength({ min: 6 })
-    .withMessage("New password must be at least 6 characters long!"),
+    .isLength({ min: 8 })
+    .withMessage("New password must be at least 8 characters long!"),
 
   body("confirmPassword")
-    .trim()
     .notEmpty()
     .withMessage("Please confirm your new password")
-    .custom((value, { req }) => {
-      if (value !== req.body.newPassword) {
-        throw new Error("Passwords do not match!");
-      }
-
-      return true;
-    }),
+    .custom((value, { req }) => value === req.body.newPassword)
+    .withMessage("Passwords do not match!"),
 ];
 
 module.exports = {

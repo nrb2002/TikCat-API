@@ -10,7 +10,6 @@ const { ROLES } = require("../utils/constants");
  * =========================
  */
 const findOrCreateGoogleUser = async (profile) => {
-
   // console.log("GOOGLE PROFILE:", JSON.stringify(profile, null, 2));
 
   console.log("GOOGLE PROFILE:", profile);

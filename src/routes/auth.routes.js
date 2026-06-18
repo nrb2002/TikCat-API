@@ -1,7 +1,7 @@
 const express = require("express");
 const passport = require("passport");
 
-const controller = require("../controllers/auth.controller");
+const userController = require("../controllers/auth.controller");
 const asyncHandler = require("../utils/asyncHandler");
 const authenticate = require("../middleware/authenticate");
 const validate = require("../middleware/validate");
@@ -18,9 +18,9 @@ router.get(
 
   /*
     #swagger.tags = ['Google OAuth']
-    #swagger.summary = 'Login with Google'
-    #swagger.description = 'Redirects the user to Google OAuth authentication.'
-    #swagger.ignore = true
+    #swagger.summary = 'Login with Google (Can only be tested with frontend)'
+    #swagger.description = 'Redirects the user to Google OAuth authentication. Swagger cannot handle this route.'
+    #swagger.ignore = false
   */
 
   passport.authenticate("google", {
@@ -33,8 +33,8 @@ router.get(
 
   /*
     #swagger.tags = ['Google OAuth']
-    #swagger.summary = 'Google OAuth callback'
-    #swagger.description = 'Handles Google authentication and returns a JWT token.'
+    #swagger.summary = 'Google OAuth callback (Can only be tested with frontend)'
+    #swagger.description = 'Handles Google authentication and returns a JWT token. Swagger cannot handle this route. '
 
     #swagger.responses[200] = {
       description: 'Authentication successful',
@@ -55,14 +55,14 @@ router.get(
       description: 'Authentication failed'
     }
 
-    #swagger.ignore = true
+    #swagger.ignore = false
   */
 
   passport.authenticate("google", {
     session: false,
     failureRedirect: "/auth/login",
   }),
-  asyncHandler(controller.googleCallback),
+  asyncHandler(userController.googleCallback),
 );
 
 /********************************************
@@ -114,7 +114,7 @@ router.post(
   */
   userValidator.registerValidationRules(),
   validate,
-  asyncHandler(controller.register),
+  asyncHandler(userController.register),
 );
 
 // Login route is public and does not require authentication
@@ -157,7 +157,7 @@ router.post(
   */
   userValidator.loginValidationRules(),
   validate,
-  asyncHandler(controller.login),
+  asyncHandler(userController.login),
 );
 
 /********************************************
@@ -190,7 +190,7 @@ router.post(
   */
 
   authenticate,
-  asyncHandler(controller.logout),
+  asyncHandler(userController.logout),
 );
 
 module.exports = router;

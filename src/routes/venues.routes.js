@@ -1,22 +1,24 @@
 const express = require("express");
 
-const controller = require("../controllers/venues.controller");
+const venueController = require("../controllers/venues.controller");
 
 const authenticate = require("../middleware/authenticate");
 const authorize = require("../middleware/authorize");
 const validateObjectId = require("../middleware/validateObjectId");
 const asyncHandler = require("../utils/asyncHandler");
+const validate = require("../middleware/validate");
+const venueValidator = require("../validators/venue.validator");
 
 const router = express.Router();
 
-// Get all venues (public or authenticated depending on your policy)
+// Get all venues (Public)
 router.get(
   "/",
   /**
     #swagger.tags = ['Venues']
-    #swagger.summary = 'Get all venues'
+    #swagger.summary = 'Get all venues. No need to be signed in. '
    */
-  asyncHandler(controller.getAllVenues),
+  asyncHandler(venueController.getAllVenues),
 );
 
 // Get single venue
@@ -24,10 +26,10 @@ router.get(
   "/:id",
   /**
     #swagger.tags = ['Venues']
-    #swagger.summary = 'Get venue by ID'
+    #swagger.summary = 'Get venue by ID (Public - Anyone with the venue ID can pull it)'
    */
   validateObjectId("id"),
-  asyncHandler(controller.getVenueById),
+  asyncHandler(venueController.getVenueById),
 );
 
 // Create venue (admin + organizer)
@@ -60,7 +62,9 @@ router.post(
   */
   authenticate,
   authorize("admin", "organizer"),
-  asyncHandler(controller.createVenue),
+  venueValidator.createVenueValidationRules(),
+  validate,
+  asyncHandler(venueController.createVenue),
 );
 
 // Update venue
@@ -95,10 +99,13 @@ router.put(
     description: 'Venue updated successfully!'
   }
 */
+
   authenticate,
   authorize("admin", "organizer"),
   validateObjectId("id"),
-  asyncHandler(controller.updateVenue),
+  venueValidator.updateVenueValidationRules(),
+  validate,
+  asyncHandler(venueController.updateVenue),
 );
 
 // Delete venue (admin only)
@@ -120,7 +127,7 @@ router.delete(
   authenticate,
   authorize("admin"),
   validateObjectId("id"),
-  asyncHandler(controller.deleteVenue),
+  asyncHandler(venueController.deleteVenue),
 );
 
 module.exports = router;

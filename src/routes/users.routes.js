@@ -1,6 +1,6 @@
 const express = require("express");
 
-const controller = require("../controllers/users.controller");
+const userController = require("../controllers/users.controller");
 const asyncHandler = require("../utils/asyncHandler");
 
 const authenticate = require("../middleware/authenticate");
@@ -27,7 +27,7 @@ router.get(
   */
 
   authenticate,
-  asyncHandler(controller.getUserProfile),
+  asyncHandler(userController.getUserProfile),
 );
 
 router.put(
@@ -62,7 +62,7 @@ router.put(
   authenticate,
   userValidator.updateProfileValidationRules(),
   validate,
-  asyncHandler(controller.updateProfile),
+  asyncHandler(userController.updateProfile),
 );
 
 router.put(
@@ -93,7 +93,7 @@ router.put(
   authenticate,
   userValidator.changePasswordValidationRules(),
   validate,
-  asyncHandler(controller.changePassword),
+  asyncHandler(userController.changePassword),
 );
 
 module.exports = router;

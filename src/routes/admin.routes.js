@@ -1,6 +1,8 @@
 const express = require("express");
 
-const controller = require("../controllers/users.controller");
+const userController = require("../controllers/users.controller");
+const ticketController = require("../controllers/tickets.controller");
+
 const asyncHandler = require("../utils/asyncHandler");
 
 const authenticate = require("../middleware/authenticate");
@@ -9,6 +11,7 @@ const validate = require("../middleware/validate");
 const validateObjectId = require("../middleware/validateObjectId");
 
 const userValidator = require("../validators/user.validator");
+const ticketValidator = require("../validators/ticketScan.validator");
 
 const router = express.Router();
 
@@ -42,7 +45,7 @@ router.get(
 
   authenticate,
   authorize("admin"),
-  asyncHandler(controller.getAllUsers),
+  asyncHandler(userController.getAllUsers),
 );
 
 /**
@@ -71,7 +74,7 @@ router.get(
   authenticate,
   authorize("admin"),
   validateObjectId("id"),
-  asyncHandler(controller.getUserById),
+  asyncHandler(userController.getUserById),
 );
 
 /**
@@ -115,7 +118,7 @@ router.put(
   userValidator.updateProfileValidationRules(),
   validate,
   validateObjectId("id"),
-  asyncHandler(controller.updateUser),
+  asyncHandler(userController.updateUser),
 );
 
 /**
@@ -142,7 +145,46 @@ router.delete(
   authenticate,
   authorize("admin"),
   validateObjectId("id"),
-  asyncHandler(controller.deleteUser),
+  asyncHandler(userController.deleteUser),
 );
+
+
+/*********************************
+ * ADMIN TICKET MANAGEMENT
+ *********************************/
+
+/**
+ * GET ALL TICKETS
+ */
+router.get(
+  "/tickets",
+  authenticate,
+  authorize("admin", "organizer"),
+  asyncHandler(ticketController.getAllTickets),
+);
+
+/**
+ * GET SINGLE TICKET
+ */
+router.get(
+  "/tickets/:id",
+  authenticate,
+  authorize("admin", "organizer"),
+  validateObjectId("id"),
+  asyncHandler(ticketController.getTicketById),
+);
+
+/**
+ * VALIDATE / CHECK-IN TICKET
+ */
+router.patch(
+  "/tickets/:id/validate",
+  authenticate,
+  authorize("admin", "organizer"),
+  validateObjectId("id"),
+  asyncHandler(ticketController.validateTicket),
+);
+
+
 
 module.exports = router;
