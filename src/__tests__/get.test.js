@@ -34,7 +34,6 @@ beforeAll(async () => {
   });
 
   expect(userLogin.statusCode).toBe(200);
-
   userToken = userLogin.body.token;
 
   const adminLogin = await request(app).post("/auth/login").send({
@@ -43,48 +42,53 @@ beforeAll(async () => {
   });
 
   expect(adminLogin.statusCode).toBe(200);
-
   adminToken = adminLogin.body.token;
 });
 
-describe("GET ROUTES ONLY", () => {
-  test("GET /health", async () => {
+describe("GET ROUTES ONLY (INTEGRATION)", () => {
+  test("GET /health should return success", async () => {
     const res = await request(app).get("/health");
 
     expect(res.statusCode).toBe(200);
     expect(res.body.success).toBe(true);
   });
 
-  test("GET /users/profile", async () => {
+  test("GET /users/profile should return user profile", async () => {
     const res = await request(app)
       .get("/users/profile")
       .set("Authorization", `Bearer ${userToken}`);
 
     expect(res.statusCode).toBe(200);
+    expect(res.body).toHaveProperty("email");
   });
 
-  test("GET /admin/users", async () => {
+  test("GET /admin/users should return users list", async () => {
     const res = await request(app)
       .get("/admin/users")
       .set("Authorization", `Bearer ${adminToken}`);
 
     expect(res.statusCode).toBe(200);
-
-    expect(res.body.users).toBeDefined();
+    expect(Array.isArray(res.body.users)).toBe(true);
+    expect(res.body.users.length).toBeGreaterThan(0);
   });
 
-  test("GET /admin/users/:id", async () => {
-    const allUsers = await request(app)
+  test("GET /admin/users/:id should return specific user", async () => {
+    const usersRes = await request(app)
       .get("/admin/users")
       .set("Authorization", `Bearer ${adminToken}`);
 
-    const userId = allUsers.body.users[0]._id;
+    const user = usersRes.body.users.find(
+      (u) => u.email === userEmail
+    );
+
+    expect(user).toBeDefined();
 
     const res = await request(app)
-      .get(`/admin/users/${userId}`)
+      .get(`/admin/users/${user._id}`)
       .set("Authorization", `Bearer ${adminToken}`);
 
     expect(res.statusCode).toBe(200);
+    expect(res.body._id).toBe(user._id);
   });
 });
 

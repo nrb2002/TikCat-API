@@ -1,5 +1,3 @@
-// src/tests/tickets.get.test.js
-
 require("dotenv").config();
 
 const request = require("supertest");
@@ -8,6 +6,7 @@ const app = require("../app");
 const Ticket = require("../models/Ticket");
 
 let adminToken;
+let createdTicketId;
 
 beforeAll(async () => {
   if (mongoose.connection.readyState === 0) {
@@ -19,47 +18,44 @@ beforeAll(async () => {
     password: process.env.ADMIN_PASSWORD,
   });
 
+  expect(adminLogin.statusCode).toBe(200);
   adminToken = adminLogin.body.token;
+
+  // 🔥 CREATE TEST DATA (IMPORTANT FIX)
+  const ticket = await Ticket.create({
+    event: "Test Event",
+    status: "valid",
+  });
+
+  createdTicketId = ticket._id;
 });
 
 describe("TICKET GET ROUTES", () => {
-  // Tests: GET /tickets
-
-  test("GET /tickets", async () => {
+  test("GET /tickets should return all tickets", async () => {
     const res = await request(app)
       .get("/tickets")
       .set("Authorization", `Bearer ${adminToken}`);
-    console.log("ALL TICKETS:", res.body);
 
     expect(res.statusCode).toBe(200);
     expect(res.body.success).toBe(true);
+    expect(Array.isArray(res.body.data)).toBe(true);
   });
 
-  // Tests: GET /tickets/:id
-  test("GET /tickets/:id", async () => {
-    const allTickets = await request(app)
-      .get("/tickets")
-      .set("Authorization", `Bearer ${adminToken}`);
-
-    console.log("ALL TICKETS:", JSON.stringify(allTickets.body, null, 2));
-
-    const ticketId = allTickets.body.data[0]._id;
-
-    console.log("TICKET ID:", ticketId);
-
+  test("GET /tickets/:id should return single ticket", async () => {
     const res = await request(app)
-      .get(`/tickets/${ticketId}`)
+      .get(`/tickets/${createdTicketId}`)
       .set("Authorization", `Bearer ${adminToken}`);
-
-    console.log("GET ONE TICKET RESPONSE:", res.body);
-    //console.log("DATABASE TICKET ID:", allTickets.body.data[0]._id);
 
     expect(res.statusCode).toBe(200);
     expect(res.body.success).toBe(true);
+
+    expect(res.body.data).toBeDefined();
+    expect(res.body.data._id).toBe(String(createdTicketId));
+    expect(res.body.data.event).toBe("Test Event");
   });
 });
 
 afterAll(async () => {
-  // Close MongoDB connection after all tests complete
+  await Ticket.findByIdAndDelete(createdTicketId);
   await mongoose.connection.close();
 });
