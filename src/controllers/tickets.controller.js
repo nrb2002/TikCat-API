@@ -1,61 +1,124 @@
-const service = require("../services/tickets.service");
-const AppError = require("../utils/appError");
+const ticketService = require("../services/tickets.service");
 const { successResponse } = require("../utils/apiResponse");
-const formatResponse = require("../utils/formatResponse");
+
 
 /**
- * GET ALL TICKETS
+ * ADMIN: GET ALL TICKETS
  */
 const getAllTickets = async (req, res) => {
-  const tickets = await service.getAllTickets();
+  const { page, limit } = req.query;
 
-  return res.status(200).json(
-    formatResponse({
-      success: true,
-      message: tickets.length
-        ? "Tickets retrieved successfully!"
-        : "No tickets found!",
-      data: tickets,
-    }),
+  const tickets = await ticketService.getAllTickets(
+    Number(page || 1),
+    Number(limit || 20)
   );
+
+  return res
+    .status(200)
+    .json(successResponse("Tickets retrieved successfully", tickets));
 };
 
+
 /**
- * GET TICKET BY ID
+ * ADMIN: GET TICKET BY ID
  */
 const getTicketById = async (req, res) => {
-  const { id } = req.params;
-
-  const ticket = await service.getTicketById(id);
-
-  if (!ticket) {
-    throw new AppError("Ticket not found!", 404);
-  }
+  const ticket = await ticketService.getTicketById(req.params.id);
 
   return res
     .status(200)
-    .json(successResponse("Ticket retrieved successfully!", ticket));
+    .json(successResponse("Ticket retrieved successfully", ticket));
 };
+
 
 /**
- * VALIDATE TICKET
+ * USER: GET MY TICKETS
  */
-const validateTicket = async (req, res) => {
-  const { id } = req.params;
-
-  const ticket = await service.validateTicket(id);
-
-  if (!ticket) {
-    throw new AppError("Ticket not found!", 404);
-  }
+const getMyTickets = async (req, res) => {
+  const tickets = await ticketService.getUserTickets(req.user.id);
 
   return res
     .status(200)
-    .json(successResponse("Ticket validated successfully!", ticket));
+    .json(successResponse("Your tickets retrieved successfully", tickets));
 };
+
+
+/**
+ * USER: GET MY TICKET BY ID
+ */
+const getMyTicketById = async (req, res) => {
+  const ticket = await ticketService.getUserTicketById(
+    req.params.id,
+    req.user.id
+  );
+
+  return res
+    .status(200)
+    .json(successResponse("Ticket retrieved successfully", ticket));
+};
+
+
+/**
+ * USER: GET QR CODE
+ */
+const getTicketQRCode = async (req, res) => {
+  const qrCode = await ticketService.getTicketQRCode(
+    req.params.id,
+    req.user.id
+  );
+
+  return res
+    .status(200)
+    .json(successResponse("QR code retrieved successfully", qrCode));
+};
+
+
+/**
+ * ADMIN / ORGANIZER: SCAN TICKET
+ */
+const validateTicket = async (req, res) => {
+  const ticket = await ticketService.scanTicket(req.params.id);
+
+  return res
+    .status(200)
+    .json(successResponse("Ticket validated successfully", ticket));
+};
+
+
+/**
+ * USER: CANCEL TICKET
+ */
+const cancelTicket = async (req, res) => {
+  const ticket = await ticketService.cancelTicket(
+    req.params.id,
+    req.user.id
+  );
+
+  return res
+    .status(200)
+    .json(successResponse("Ticket cancelled successfully", ticket));
+};
+
+
+/**
+ * ADMIN: DELETE TICKET
+ */
+const deleteTicket = async (req, res) => {
+  const ticket = await ticketService.deleteTicket(req.params.id);
+
+  return res
+    .status(200)
+    .json(successResponse("Ticket deleted successfully", ticket));
+};
+
 
 module.exports = {
   getAllTickets,
   getTicketById,
+  getMyTickets,
+  getMyTicketById,
+  getTicketQRCode,
   validateTicket,
+  cancelTicket,
+  deleteTicket,
 };

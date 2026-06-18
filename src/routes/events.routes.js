@@ -1,11 +1,13 @@
 const express = require("express");
 
-const controller = require("../controllers/events.controller");
+const eventController = require("../controllers/events.controller");
 
 const authenticate = require("../middleware/authenticate");
 const authorize = require("../middleware/authorize");
 const validateObjectId = require("../middleware/validateObjectId");
 const asyncHandler = require("../utils/asyncHandler");
+const validate = require("../middleware/validate");
+const eventValidator = require("../validators/event.validator");
 
 const router = express.Router();
 
@@ -20,7 +22,7 @@ router.get(
       schema: [{ $ref: '#/definitions/Events' }]
     }
   */
-  asyncHandler(controller.getAllEvents),
+  asyncHandler(eventController.getAllEvents),
 );
 
 //Get single event
@@ -43,7 +45,7 @@ router.get(
     }
   */
   validateObjectId("id"),
-  asyncHandler(controller.getEventById),
+  asyncHandler(eventController.getEventById),
 );
 
 //Create a new event
@@ -76,13 +78,15 @@ router.post(
       }
     }
     #swagger.responses[201] = {
-      description: 'Events created successfully'
+      description: 'Events created successfully!'
     }
   */
 
   authenticate,
   authorize("admin", "organizer"),
-  asyncHandler(controller.createEvent),
+  eventValidator.createEventValidationRules(),
+  validate,
+  asyncHandler(eventController.createEvent),
 );
 
 //Update an existing events
@@ -121,7 +125,9 @@ router.put(
   authenticate,
   authorize("admin", "organizer"),
   validateObjectId("id"),
-  asyncHandler(controller.updateEvent),
+  eventValidator.updateEventValidationRules(),
+  validate,
+  asyncHandler(eventController.updateEvent),
 );
 
 //Delete an events
@@ -144,7 +150,7 @@ router.delete(
   authenticate,
   authorize("admin", "organizer"),
   validateObjectId("id"),
-  asyncHandler(controller.deleteEvent),
+  asyncHandler(eventController.deleteEvent),
 );
 
 module.exports = router;

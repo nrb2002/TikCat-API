@@ -1,5 +1,3 @@
-// src/tests/orders.get.test.js
-
 require("dotenv").config();
 
 const request = require("supertest");
@@ -8,6 +6,7 @@ const app = require("../app");
 const Order = require("../models/Order");
 
 let adminToken;
+let createdOrderId;
 
 beforeAll(async () => {
   if (mongoose.connection.readyState === 0) {
@@ -19,47 +18,44 @@ beforeAll(async () => {
     password: process.env.ADMIN_PASSWORD,
   });
 
+  expect(adminLogin.statusCode).toBe(200);
   adminToken = adminLogin.body.token;
+
+  // 🔥 Create test data (IMPORTANT FIX)
+  const order = await Order.create({
+    event: "Test Event",
+    quantity: 2,
+  });
+
+  createdOrderId = order._id;
 });
 
 describe("ORDER GET ROUTES", () => {
-  // Tests: GET /orders
-
-  test("GET /orders", async () => {
+  test("GET /orders should return all orders", async () => {
     const res = await request(app)
       .get("/orders")
       .set("Authorization", `Bearer ${adminToken}`);
-    console.log("ALL ORDERS:", res.body);
 
     expect(res.statusCode).toBe(200);
     expect(res.body.success).toBe(true);
+    expect(Array.isArray(res.body.data)).toBe(true);
   });
 
-  // Tests: GET /orders/:id
-  test("GET /orders/:id", async () => {
-    const allOrders = await request(app)
-      .get("/orders")
-      .set("Authorization", `Bearer ${adminToken}`);
-
-    console.log("ALL ORDERS:", JSON.stringify(allOrders.body, null, 2));
-
-    const orderId = allOrders.body.data[0]._id;
-
-    console.log("ORDER ID:", orderId);
-
+  test("GET /orders/:id should return single order", async () => {
     const res = await request(app)
-      .get(`/orders/${orderId}`)
+      .get(`/orders/${createdOrderId}`)
       .set("Authorization", `Bearer ${adminToken}`);
-
-    console.log("GET ONE ORDER RESPONSE:", res.body);
-    //console.log("DATABASE ORDER ID:", allOrders.body.data[0]._id);
 
     expect(res.statusCode).toBe(200);
     expect(res.body.success).toBe(true);
+
+    // safer validation
+    expect(res.body.data).toBeDefined();
+    expect(res.body.data._id).toBe(String(createdOrderId));
   });
 });
 
 afterAll(async () => {
-  // Close MongoDB connection after all tests complete
+  await Order.findByIdAndDelete(createdOrderId);
   await mongoose.connection.close();
 });

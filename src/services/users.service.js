@@ -110,13 +110,7 @@ const changePassword = async (
  * =========================
  */
 const getAllUsers = async () => {
-  const users = await User.find().select("-password -googleId -__v");
-
-  return {
-    success: true,
-    count: users.length,
-    users,
-  };
+  return await User.find().select("-password -googleId -__v");
 };
 
 /**
@@ -129,7 +123,7 @@ const getSingleUser = async (id) => {
   const user = await User.findById(id).select("-password -googleId -__v");
 
   if (!user) {
-    throw new AppError("User not found", 404);
+    throw new AppError("User not found!", 404);
   }
 
   return {

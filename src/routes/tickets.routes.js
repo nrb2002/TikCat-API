@@ -1,79 +1,88 @@
 const express = require("express");
 
-const controller = require("../controllers/tickets.controller");
+const ticketController = require("../controllers/tickets.controller");
 
 const authenticate = require("../middleware/authenticate");
-const authorize = require("../middleware/authorize");
 const validateObjectId = require("../middleware/validateObjectId");
 const asyncHandler = require("../utils/asyncHandler");
 
 const router = express.Router();
 
-// Get all tickets (Admin + Organizer only recommended for security)
+
+/*********************************
+ * USER TICKET ACCESS
+ *********************************/
+
+
+/**
+ * GET MY TICKETS
+ * Logged-in user only
+ */
 router.get(
-  "/",
-  /* 
+  "/my-tickets",
+
+  /*
     #swagger.tags = ['Tickets']
-    #swagger.summary = 'Get all Tickets'
-    #swagger.responses[200] = {
-      description: 'List of tickets',
-      schema: [{ $ref: '#/definitions/Ticket' }]
-    }
+    #swagger.summary = 'Get logged-in user tickets'
+    #swagger.description =
+    'Returns tickets purchased by the authenticated user.'
+
+    #swagger.security = [{
+      "BearerAuth":[]
+    }]
   */
+
   authenticate,
-  authorize("admin", "organizer"),
-  asyncHandler(controller.getAllTickets),
+  asyncHandler(ticketController.getMyTickets),
 );
 
-// Get single ticket
+
+
+/**
+ * GET MY TICKET BY ID
+ * Logged-in user only
+ */
 router.get(
   "/:id",
-  /* 
+
+  /*
     #swagger.tags = ['Tickets']
-    #swagger.summary = 'Get Ticket by ID (Admins and Organizers only)'
-    #swagger.parameters['id'] = {
-      in: 'path',
-      description: 'Ticket ID',
-      required: true,
-      type: 'string'
-    }
-    #swagger.responses[200] = {
-      schema: { $ref: '#/definitions/Order' }
-    }
-    #swagger.responses[404] = {
-      description: 'Order not found'
-    }
+    #swagger.summary = 'Get my ticket by ID'
+
+    #swagger.security = [{
+      "BearerAuth":[]
+    }]
   */
+
   authenticate,
-  authorize("admin", "organizer"),
   validateObjectId("id"),
-  asyncHandler(controller.getTicketById),
+  asyncHandler(ticketController.getMyTicketById),
 );
 
-// Validate ticket (QR scan / check-in)
-router.patch(
-  "/:id/validate",
-  /* 
-  #swagger.tags = ['Tickets']
-  #swagger.summary = 'Validate ticket (Admins and Organizers only)'
-  #swagger.description = 'QR scan / check-in: Marks a ticket as used after entry validation.'
-  #swagger.security = [{
-    "BearerAuth": []
-  }]
-  #swagger.parameters['id'] = {
-    in: 'path',
-    description: 'Ticket ID',
-    required: true,
-    type: 'string'
-  }
-  #swagger.responses[200] = {
-    description: 'Ticket validated successfully'
-  }
-*/
+
+
+/**
+ * DOWNLOAD / VIEW QR CODE
+ * Logged-in user only
+ */
+router.get(
+  "/:id/qrcode",
+
+  /*
+    #swagger.tags = ['Tickets']
+    #swagger.summary = 'Get ticket QR code'
+
+    #swagger.security = [{
+      "BearerAuth":[]
+    }]
+  */
+
   authenticate,
-  authorize("admin", "organizer"),
   validateObjectId("id"),
-  asyncHandler(controller.validateTicket),
+  asyncHandler(ticketController.getTicketQRCode),
 );
+
+
+
 
 module.exports = router;

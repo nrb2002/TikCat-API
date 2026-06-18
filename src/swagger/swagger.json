@@ -30,6 +30,78 @@
         }
       }
     },
+    "/auth/google": {
+      "get": {
+        "tags": [
+          "Google OAuth"
+        ],
+        "summary": "Login with Google (Can only be tested with frontend)",
+        "description": "Redirects the user to Google OAuth authentication. Swagger cannot handle this route.",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/auth/google/callback": {
+      "get": {
+        "tags": [
+          "Google OAuth"
+        ],
+        "summary": "Google OAuth callback (Can only be tested with frontend)",
+        "description": "Handles Google authentication and returns a JWT token. Swagger cannot handle this route. ",
+        "responses": {
+          "200": {
+            "description": "Authentication successful",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Login successful"
+                },
+                "token": {
+                  "type": "string",
+                  "example": "jwt_token_here"
+                },
+                "user": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "6845a123abc456"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "john@gmail.com"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "John Doe"
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "attendee"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication failed"
+          }
+        }
+      }
+    },
     "/auth/register": {
       "post": {
         "tags": [
@@ -553,6 +625,108 @@
         ]
       }
     },
+    "/admin/tickets": {
+      "get": {
+        "tags": [
+          "Ticket Management"
+        ],
+        "summary": "Get all tickets (Admins and Organizers only)",
+        "description": "Returns all event tickets. Admin or Organizer access required.",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/tickets/{id}": {
+      "get": {
+        "tags": [
+          "Ticket Management"
+        ],
+        "summary": "Get ticket by ID (Admins and Organizers only)",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/tickets/scan": {
+      "post": {
+        "tags": [
+          "Ticket Management"
+        ],
+        "summary": "Scan ticket QR code (Admins and Organizers only)",
+        "description": "Validates ticket and marks it as used during event check-in.",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ticketId": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
     "/events/": {
       "get": {
         "tags": [
@@ -645,7 +819,10 @@
         ],
         "responses": {
           "201": {
-            "description": "Events created successfully"
+            "description": "Events created successfully!"
+          },
+          "400": {
+            "description": "Bad Request"
           },
           "401": {
             "description": "Unauthorized"
@@ -1031,7 +1208,7 @@
         "tags": [
           "Venues"
         ],
-        "summary": "Get all venues",
+        "summary": "Get all venues. No need to be signed in. ",
         "description": "",
         "responses": {
           "default": {
@@ -1095,6 +1272,9 @@
           "201": {
             "description": "Venue created successfully"
           },
+          "400": {
+            "description": "Bad Request"
+          },
           "401": {
             "description": "Unauthorized"
           }
@@ -1111,7 +1291,7 @@
         "tags": [
           "Venues"
         ],
-        "summary": "Get venue by ID",
+        "summary": "Get venue by ID (Public - Anyone with the venue ID can pull it)",
         "description": "",
         "parameters": [
           {

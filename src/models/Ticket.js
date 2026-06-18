@@ -23,6 +23,7 @@ const ticketSchema = new mongoose.Schema(
       unique: true,
       trim: true,
       index: true,
+      match: [/^[A-Z0-9\-]+$/, "Invalid ticket code format"],
     },
 
     qrCode: {
@@ -33,7 +34,7 @@ const ticketSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: {
-        values: TICKET_STATUS,
+        values: TICKET_STATUS, // ["reserved", "paid", "used", "cancelled"]
         message: "Invalid ticket status",
       },
       default: "reserved",
@@ -43,12 +44,16 @@ const ticketSchema = new mongoose.Schema(
     purchaseDate: {
       type: Date,
       default: Date.now,
-      index: true,
     },
   },
   {
     timestamps: true,
   },
 );
+
+/**
+ * Prevent duplicate tickets for same user + event (optional but recommended)
+ */
+ticketSchema.index({ eventId: 1, attendeeId: 1 });
 
 module.exports = mongoose.model("Ticket", ticketSchema);
