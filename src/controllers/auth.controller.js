@@ -40,13 +40,13 @@ const login = async (req, res) => {
  * =========================
  */
 const googleCallback = async (req, res) => {
-  const user = await authService.findOrCreateGoogleUser(req.user);
+  const user = req.user;
 
   const response = authService.buildAuthResponse(user);
 
   res.status(200).json({
     success: true,
-    message: "Google authentication successful",
+    message: "Google authentication successful!",
     ...response,
   });
 };
